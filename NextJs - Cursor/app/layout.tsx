@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import { Providers } from "./providers";
@@ -40,8 +39,11 @@ const themeInitScript = `(function(){try{var d=document.documentElement;var t=lo
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       <body className="min-h-screen font-sans antialiased">
+        <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
         <Providers>{children}</Providers>
       </body>
     </html>

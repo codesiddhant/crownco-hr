@@ -2,19 +2,19 @@
 
 import * as React from "react";
 import { useAppSelector } from "@/lib/store/hooks";
-import { getDataset } from "@/lib/mock/service";
+import { getDataset, getHydrationDataset } from "@/lib/mock/service";
 import type { SeedDataset } from "@/lib/mock/seed";
 
 export function useDataset(): SeedDataset {
   useAppSelector((s) => s.data.optimisticVersion);
-  const [ds, setDs] = React.useState<SeedDataset | null>(null);
+  const [live, setLive] = React.useState(false);
 
   React.useEffect(() => {
-    setDs(getDataset());
+    setLive(true);
   }, []);
 
-  if (!ds) {
-    return getDataset();
+  if (!live) {
+    return getHydrationDataset();
   }
   return getDataset();
 }

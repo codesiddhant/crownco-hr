@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Leaderboard — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('leaderboard');
+const me = state.user;
+const ranked = MOCK_EMPLOYEES.slice(0,15).sort((a,b)=>b.productivity-a.productivity);
+ranked[0] = {...ranked[0], name:me.name, initials:me.avatar, productivity:96, calls:47, leads:12};
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">My Workspace / Team Leaderboard</div>
+<div class="page-head">
+  <div><h1 class="page-title">🏆 Team Leaderboard</h1><div class="page-sub">See how you stack up against your team this month</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-soft btn-sm">This Week</button><button class="btn btn-ghost btn-sm">This Month</button><button class="btn btn-ghost btn-sm">All Time</button></div>
+</div>
+
+<div class="grid-12">
+  <div class="col-12 fadeup" style="display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:14px;align-items:end">
+    ${[
+      {n:ranked[1].name,s:ranked[1].productivity,r:2,m:'silver',h:140,me:false},
+      {n:ranked[0].name,s:ranked[0].productivity,r:1,m:'gold',h:180,me:true},
+      {n:ranked[2].name,s:ranked[2].productivity,r:3,m:'bronze',h:120,me:false},
+    ].map(p=>`
+      <div style="text-align:center;background:${p.me?'linear-gradient(135deg,#8B5CF6,#A855F7)':'var(--bg-2)'};${p.me?'color:#fff':''};border:1px solid var(--line);border-radius:16px;padding:18px;position:relative">
+        <div style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);width:48px;height:48px;border-radius:50%;background:${p.m==='gold'?'linear-gradient(135deg,#FBBF24,#F59E0B)':p.m==='silver'?'linear-gradient(135deg,#CBD5E1,#94A3B8)':'linear-gradient(135deg,#FB923C,#EA580C)'};color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px;box-shadow:var(--shadow);border:3px solid var(--bg-2)">${p.r===1?'👑':p.r===2?'🥈':'🥉'}</div>
+        <div class="avatar lg" style="margin:18px auto 8px;background:${p.me?'rgba(255,255,255,.25)':'var(--grad)'}">${initials(p.n)}</div>
+        <div style="font-weight:800;font-size:15px">${p.n}${p.me?' (You)':''}</div>
+        <div style="font-size:38px;font-weight:800;margin-top:4px">${p.s}</div>
+        <div style="font-size:11px;opacity:.85">productivity score</div>
+        <div style="height:${p.h}px;margin:14px -18px -18px;background:${p.me?'rgba(255,255,255,.15)':'var(--bg-3)'};border-radius:0 0 16px 16px;display:grid;place-items:center;font-size:36px;font-weight:800;opacity:.4">#${p.r}</div>
+      </div>
+    `).join('')}
+  </div>
+
+  <div class="card col-8 fadeup">
+    <div class="card-head"><div><div class="card-title">📊 Full Ranking · This Week</div><div class="card-sub">AI-composite score</div></div>
+    <div style="display:flex;gap:6px"><button class="chip purple">All</button><button class="chip">Sales</button><button class="chip">Support</button></div></div>
+    <div style="overflow:auto">
+      ${ranked.map((p,i)=>`
+        <div class="lb-row" style="${i===0?'background:var(--brand-soft);border:1px solid var(--brand)':''}">
+          <div class="lb-rank ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}</div>
+          <div class="avatar sm">${p.initials}</div>
+          <div style="flex:1;min-width:0"><div style="font-weight:${i===0?'800':'600'};font-size:13px">${p.name}${i===0?' (You) 👑':''}</div><div style="font-size:11.5px;color:var(--ink-3)">${p.role} · ${p.calls} calls · ${p.leads} qualified</div></div>
+          <div style="display:flex;gap:6px;align-items:center"><span class="chip purple">🪙 ${(p.productivity*30).toLocaleString()}</span><div style="text-align:right"><div style="font-weight:800;color:var(--brand)">${p.productivity}</div></div></div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+
+  <div class="col-4 vstack">
+    <div class="ai-card fadeup">
+      <div class="ai-badge"><i class="fa-solid fa-fire"></i> Hot This Week</div>
+      <div class="vstack" style="margin-top:10px;gap:8px">
+        <div style="padding:10px;background:var(--bg-2);border-radius:11px;border:1px solid var(--line);font-size:13px"><b>🚀 Biggest jumper:</b> Rohan Kapoor (+8 ranks)</div>
+        <div style="padding:10px;background:var(--bg-2);border-radius:11px;border:1px solid var(--line);font-size:13px"><b>🎯 Most improved:</b> Ananya V. (+18% conversion)</div>
+        <div style="padding:10px;background:var(--bg-2);border-radius:11px;border:1px solid var(--line);font-size:13px"><b>📞 Top caller:</b> Karan S. — 312 calls</div>
+        <div style="padding:10px;background:var(--bg-2);border-radius:11px;border:1px solid var(--line);font-size:13px"><b>💰 Top revenue:</b> ${me.name} — ₹2.4L 🎉</div>
+      </div>
+    </div>
+
+    <div class="card fadeup delay-1">
+      <div class="card-head"><div class="card-title">🎁 Weekly Prizes</div></div>
+      <div class="vstack" style="gap:8px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;padding:8px"><span><b>🥇 Rank #1</b></span><b>₹5,000 voucher</b></div>
+        <div style="display:flex;justify-content:space-between;padding:8px"><span><b>🥈 Rank #2</b></span><b>₹3,000 voucher</b></div>
+        <div style="display:flex;justify-content:space-between;padding:8px"><span><b>🥉 Rank #3</b></span><b>₹2,000 voucher</b></div>
+        <div style="display:flex;justify-content:space-between;padding:8px"><span><b>Top 10</b></span><b>1,000 coins</b></div>
+        <div style="display:flex;justify-content:space-between;padding:8px"><span><b>Most improved</b></span><b>Surprise gift 🎁</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+</script>
+</body></html>

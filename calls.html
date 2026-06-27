@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Call & Meeting Analytics — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('calls');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">Attendance & Work / Call Analytics</div>
+<div class="page-head">
+  <div><h1 class="page-title">AI Call & Meeting Analytics</h1><div class="page-sub">Whisper transcription · sentiment · objection detection · coaching</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-ghost"><i class="fa-solid fa-filter"></i> All teams</button><button class="btn btn-grad"><i class="fa-solid fa-download"></i> Export Insights</button></div>
+</div>
+
+<div class="grid-12">
+  <div class="col-5 vstack">
+    <div class="card fadeup">
+      <div class="card-head"><div><div class="card-title">Recent Calls</div><div class="card-sub">Auto-transcribed · click to view</div></div></div>
+      <div class="vstack" style="gap:6px">
+        ${[
+          {n:'Priya Mehta',c:'Acme Corp · Demo',d:'12 min',sc:92,sent:'Positive',sg:'green',sel:true},
+          {n:'Karan Singh',c:'Wipro · Discovery',d:'8 min',sc:84,sent:'Neutral',sg:''},
+          {n:'Neha Iyer',c:'TCS · Follow-up',d:'14 min',sc:76,sent:'Positive',sg:'green'},
+          {n:'Rohan Kapoor',c:'HDFC · Cold call',d:'4 min',sc:42,sent:'Negative',sg:'red'},
+          {n:'Ananya V.',c:'Infosys · Closing',d:'22 min',sc:96,sent:'Positive',sg:'green'},
+        ].map(c=>`
+          <div style="padding:11px;background:${c.sel?'var(--brand-soft)':'var(--bg-3)'};border-radius:11px;display:flex;gap:10px;align-items:center;cursor:pointer;${c.sel?'border:1px solid var(--brand)':''}">
+            <div class="avatar sm">${initials(c.n)}</div>
+            <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">${c.n}</div><div style="font-size:11.5px;color:var(--ink-3)">${c.c}</div></div>
+            <div style="text-align:right"><div style="font-weight:700;color:var(--brand);font-size:13px">${c.sc}</div><div style="font-size:10.5px;color:var(--ink-3)">${c.d}</div></div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="card fadeup delay-1">
+      <div class="card-head"><div class="card-title">Communication Quality · Team</div></div>
+      <div style="height:200px"><canvas id="qual"></canvas></div>
+    </div>
+  </div>
+
+  <div class="col-7 vstack">
+    <div class="card fadeup">
+      <div class="card-head">
+        <div><div class="card-title">📞 Priya Mehta × Acme Corp · 12:14 PM</div><div class="card-sub">Demo call · 12 min · Whisper transcribed</div></div>
+        <div style="display:flex;gap:6px"><span class="chip green">Won 🏆</span><span class="chip blue">Score 92</span></div>
+      </div>
+      <div style="background:var(--bg-3);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px">
+        <button class="icon-btn" style="background:var(--brand);color:#fff;border:none"><i class="fa-solid fa-play"></i></button>
+        <div style="flex:1">
+          <div style="height:38px;display:flex;align-items:end;gap:2px">
+            ${Array.from({length:50}).map((_,i)=>`<div style="flex:1;height:${20+Math.abs(Math.sin(i*.5))*60+Math.random()*20}%;background:linear-gradient(180deg,var(--brand),var(--purple));border-radius:2px;opacity:${i<18?1:.35}"></div>`).join('')}
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3);margin-top:4px"><span>04:32</span><span>12:08</span></div>
+        </div>
+        <div style="font-size:12px;text-align:right"><b style="color:var(--green)">+ Positive</b><div style="color:var(--ink-3)">Sentiment</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px">
+        ${[{l:'Sentiment',v:'+0.78',c:'green'},{l:'Talk-ratio',v:'62/38',c:'blue'},{l:'Energy',v:'High',c:'purple'},{l:'Objections',v:'2',c:'amber'}].map(x=>`<div style="text-align:center;padding:10px;background:var(--bg-3);border-radius:10px"><div style="font-weight:800;color:var(--${x.c==='green'?'green':x.c==='blue'?'brand':x.c==='purple'?'purple':'amber'})">${x.v}</div><div style="font-size:10.5px;color:var(--ink-3)">${x.l}</div></div>`).join('')}
+      </div>
+
+      <div style="margin-top:14px"><b style="font-size:13px">🗒 AI Transcript</b><div class="tl" style="margin-top:10px;max-height:280px;overflow:auto">
+        ${[
+          {t:'00:12',w:'Priya',x:`Hi Mr. Sharma! Thank you for taking my call today. I'd love to walk you through how Crownco can help your sales team.`,c:'green'},
+          {t:'00:45',w:'Client',x:`Sure, I have about 15 minutes. Tell me what makes you different.`,c:''},
+          {t:'01:08',w:'Priya',x:`Great. So our platform combines CRM + AI productivity intelligence. <mark style="background:#fef3c7;padding:0 4px;border-radius:4px">Most teams see 30% conversion lift in first 60 days.</mark>`,c:'green'},
+          {t:'03:22',w:'Client',x:`<mark style="background:#fee2e2;padding:0 4px;border-radius:4px">Honestly, pricing seems high compared to HubSpot.</mark>`,c:'red'},
+          {t:'03:38',w:'Priya',x:`I understand. Let me show you the ROI calculator — at your scale of 80 reps, we typically save ₹18L/year in coaching costs alone.`,c:'green'},
+          {t:'08:14',w:'Client',x:`Okay this is interesting. Can we schedule a deeper dive with my CTO?`,c:'green'},
+          {t:'11:42',w:'Priya',x:`Absolutely. I'll send a calendar invite for Friday 11 AM. Thank you!`,c:'green'},
+        ].map(t=>`<div class="tl-item ${t.c}"><div style="font-size:11px;color:var(--ink-3);font-weight:600">${t.t} · ${t.w}</div><div style="font-size:13px;margin-top:2px;line-height:1.5">${t.x}</div></div>`).join('')}
+      </div></div>
+    </div>
+
+    <div class="ai-card fadeup delay-1">
+      <div class="ai-badge"><i class="fa-solid fa-graduation-cap"></i> AI Coach · Recommendations</div>
+      <div class="vstack" style="margin-top:10px;gap:8px">
+        <div style="font-size:13px;line-height:1.5">✅ <b>Great:</b> Quick ROI pivot when pricing objection raised at 03:22.</div>
+        <div style="font-size:13px;line-height:1.5">⚠ <b>Improve:</b> Talk ratio 62% — try to let prospect speak more in discovery (target 40/60).</div>
+        <div style="font-size:13px;line-height:1.5">💡 <b>Missed:</b> Could have asked about budget timeline at 08:14 to qualify urgency.</div>
+        <div style="font-size:13px;line-height:1.5">🎯 <b>Next:</b> Send case study #3 (Wipro implementation) before Friday meeting.</div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+const ct = chartTheme();
+new Chart(document.getElementById('qual'),{
+  type:'bar',
+  data:{labels:['Tone','Clarity','Empathy','Pace','Closing','Objection'],datasets:[{label:'Team avg',data:[82,78,76,84,68,72],backgroundColor:'#2563EB',borderRadius:6}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:ct.grid},max:100},y:{grid:{display:false}}}}
+});
+</script>
+</body></html>

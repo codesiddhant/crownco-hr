@@ -37,14 +37,34 @@ export function GeofenceMap({
   livePin,
   className
 }: GeofenceMapProps) {
+  const [showMap, setShowMap] = React.useState(false);
+  const [remountToken, setRemountToken] = React.useState(0);
+  const liveSig = livePin ? `${livePin.lat}-${livePin.lng}-${livePin.inside ? 1 : 0}` : "none";
+
+  React.useEffect(() => {
+    setShowMap(true);
+    return () => {
+      setShowMap(false);
+      setRemountToken((t) => t + 1);
+    };
+  }, [branch.id, radius, height, liveSig]);
+
+  const mapKey = `${branch.id}-${radius}-${height}-${liveSig}-${remountToken}`;
+
   return (
     <div className={"relative overflow-hidden rounded-2xl border " + (className ?? "")} style={{ height }}>
-      <MapContainer
-        center={[branch.lat, branch.lng]}
-        zoom={16}
-        scrollWheelZoom={false}
-        style={{ height: "100%", width: "100%" }}
-      >
+      {!showMap ? (
+        <div className="flex h-full w-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
+          Loading map…
+        </div>
+      ) : (
+        <MapContainer
+          key={mapKey}
+          center={[branch.lat, branch.lng]}
+          zoom={16}
+          scrollWheelZoom={false}
+          style={{ height: "100%", width: "100%" }}
+        >
         <TileLayer
           attribution='&copy; OpenStreetMap'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -91,7 +111,8 @@ export function GeofenceMap({
             </Popup>
           </Marker>
         )}
-      </MapContainer>
+        </MapContainer>
+      )}
     </div>
   );
 }

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rewards & Gamification — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('rewards');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">People / Rewards & Gamification</div>
+<div class="page-head">
+  <div><h1 class="page-title">Rewards & Gamification 🏆</h1><div class="page-sub">Recognise, reward, retain — AI-driven gift cards, badges & leaderboards</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-ghost"><i class="fa-solid fa-coins"></i> Coin Bank: 1.2M</button><button class="btn btn-grad" onclick="openGift()"><i class="fa-solid fa-gift"></i> Send Reward</button></div>
+</div>
+
+<div class="grid-12">
+  <div class="col-12 fadeup" style="background:var(--grad);color:#fff;border-radius:var(--r-lg);padding:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;position:relative;overflow:hidden">
+    <div style="position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)"></div>
+    <div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;opacity:.8">🎉 Monthly Challenge · May 2026</div>
+      <div style="font-size:24px;font-weight:800;margin:6px 0">"Iron Closer" — 100 qualified leads in May</div>
+      <div style="opacity:.85;font-size:13px">Prize pool: ₹50,000 Amazon vouchers · Top 10 winners · 12 days left</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:32px;font-weight:800">68%</div>
+      <div style="opacity:.85;font-size:12px">Workforce progress</div>
+    </div>
+  </div>
+
+  <div class="card col-8 fadeup">
+    <div class="card-head"><div><div class="card-title">🏆 Master Leaderboard · This Month</div><div class="card-sub">AI-ranked by composite performance score</div></div>
+      <div style="display:flex;gap:6px"><button class="chip blue">All</button><button class="chip">Top Caller</button><button class="chip">Top Closer</button><button class="chip">Fastest Reply</button></div>
+    </div>
+    ${MOCK_EMPLOYEES.slice(0,10).sort((a,b)=>b.productivity-a.productivity).map((e,i)=>`
+      <div class="lb-row">
+        <div class="lb-rank ${['gold','silver','bronze','','','','','','',''][i]}">${i+1}</div>
+        <div class="avatar sm">${e.initials}</div>
+        <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px">${e.name} ${i<3?'<span style="font-size:13px">'+['👑','🥈','🥉'][i]+'</span>':''}</div><div style="font-size:11.5px;color:var(--ink-3)">${e.role} · ${e.calls} calls · ${e.leads} qualified</div></div>
+        <div style="display:flex;gap:6px;align-items:center"><span class="chip purple">🪙 ${(e.productivity*30).toLocaleString()}</span><div style="text-align:right"><div style="font-weight:800;color:var(--brand)">${e.productivity}</div><div style="font-size:10.5px;color:var(--ink-3)">score</div></div></div>
+      </div>
+    `).join('')}
+  </div>
+
+  <div class="col-4 vstack">
+    <div class="card fadeup">
+      <div class="card-head"><div class="card-title">🎁 Gift Card Catalog</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${[
+          {b:'Amazon',a:'₹1000',c:'#FF9900'},
+          {b:'Flipkart',a:'₹500',c:'#2874F0'},
+          {b:'Swiggy',a:'₹500',c:'#FC8019'},
+          {b:'Myntra',a:'₹1000',c:'#FF3F6C'},
+          {b:'BookMyShow',a:'₹500',c:'#C9252C'},
+          {b:'Croma',a:'₹2000',c:'#119744'},
+        ].map(g=>`
+          <div style="padding:11px;border-radius:11px;background:linear-gradient(135deg,${g.c}22,${g.c}11);border:1px solid ${g.c}44;cursor:pointer;transition:transform .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+            <div style="font-weight:800;color:${g.c};font-size:14px">${g.b}</div>
+            <div style="font-size:12px;font-weight:700;margin-top:4px">${g.a}</div>
+            <div style="font-size:10.5px;color:var(--ink-3);margin-top:2px">Send instantly</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="card fadeup delay-1">
+      <div class="card-head"><div class="card-title">Achievement Badges</div><span class="chip">240 unlocked</span></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+        ${[
+          {i:'🥇',n:'Top Closer'},{i:'🔥',n:'Hot Streak'},{i:'🎯',n:'100 Calls'},{i:'⚡',n:'Fast Reply'},
+          {i:'💎',n:'Premium'},{i:'🌟',n:'7-Day'},{i:'🏆',n:'Champion'},{i:'🚀',n:'Rocket'},
+        ].map(b=>`<div style="text-align:center;padding:10px 6px;background:var(--bg-3);border-radius:11px"><div style="font-size:24px">${b.i}</div><div style="font-size:10px;font-weight:600;margin-top:4px">${b.n}</div></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="ai-card fadeup delay-2">
+      <div class="ai-badge"><i class="fa-solid fa-heart"></i> AI Motivation Engine</div>
+      <div style="margin-top:8px;font-size:13px;line-height:1.5">Auto-generated personalized messages sent to <b>54 employees</b> this week. Open rate: <b>94%</b>. Engagement lift: <b>+18%</b>.</div>
+      <button class="btn btn-soft btn-sm" style="margin-top:10px;width:100%;justify-content:center">View Auto-Messages</button>
+    </div>
+  </div>
+</div>
+`;
+
+function openGift(){
+  const m = document.createElement('div'); m.className='modal-bg open';
+  m.innerHTML = `
+    <div class="modal">
+      <div class="modal-head"><div><div style="font-weight:700">Send Reward 🎁</div><div class="tiny muted">AI suggests top performers</div></div><button onclick="this.closest('.modal-bg').remove()"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="modal-body">
+        <div class="field"><label>Reward Type</label><select><option>Amazon Gift Card</option><option>Bonus Cash</option><option>Coins (1000)</option><option>Performance Badge</option></select></div>
+        <div class="field"><label>Amount</label><input value="₹2,000"></div>
+        <div class="field"><label>Recipients (AI-suggested top 5)</label>
+          <div class="vstack" style="gap:6px;margin-top:6px">
+            ${['Priya Mehta','Karan Singh','Neha Iyer','Rohan Kapoor','Ananya Verma'].map(n=>`<label style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg-3);border-radius:9px"><input type="checkbox" checked><div class="avatar sm">${initials(n)}</div><span style="flex:1;font-size:13px">${n}</span><span class="chip green">Suggested</span></label>`).join('')}
+          </div>
+        </div>
+        <div class="field"><label>Message</label><textarea rows="2">🎉 Outstanding work this week! Keep crushing it!</textarea></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" onclick="this.closest('.modal-bg').remove()">Cancel</button><button class="btn btn-grad" onclick="this.closest('.modal-bg').remove();toast('🎁 Rewards sent to 5 employees · ₹10,000 disbursed','success')">Send Reward</button></div>
+    </div>`;
+  document.body.appendChild(m);
+}
+</script>
+</body></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Attendance — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('my-attendance');
+const u = state.user;
+const isField = state.role === 'field';
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">My Workspace / Check In / Out</div>
+<div class="page-head">
+  <div><h1 class="page-title">${isField?'Selfie Check-In':'Check In / Out'}</h1><div class="page-sub">${isField?'Selfie + gesture verification for field employees':'Auto check-in via WiFi · Geo · Selfie'}</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-ghost" onclick="reqCorr()"><i class="fa-solid fa-pen"></i> Correction Request</button></div>
+</div>
+
+<div class="grid-12">
+  <div class="col-7 vstack">
+    <div class="card fadeup" style="background:linear-gradient(135deg,#10B981,#059669);color:#fff;border:none;text-align:center;padding:30px">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;opacity:.85"><i class="fa-solid fa-circle-check"></i> Checked In Today</div>
+      <div style="font-size:48px;font-weight:800;margin:8px 0">09:24 AM</div>
+      <div style="opacity:.9;font-size:13px">via WiFi-fence · Crownco-HQ-5G · Mumbai HQ</div>
+      <div style="display:flex;justify-content:center;gap:24px;margin-top:18px">
+        <div><div style="font-size:18px;font-weight:800">6h 12m</div><div style="font-size:11px;opacity:.85">Worked today</div></div>
+        <div><div style="font-size:18px;font-weight:800">06:30 PM</div><div style="font-size:11px;opacity:.85">Auto check-out</div></div>
+      </div>
+      <button class="btn" onclick="openCheckin()" style="margin-top:18px;background:rgba(255,255,255,.2);color:#fff;backdrop-filter:blur(8px)"><i class="fa-solid fa-fingerprint"></i> Re-verify Now</button>
+    </div>
+
+    <div class="card fadeup delay-1">
+      <div class="card-head"><div class="card-title">📅 My Attendance History · May 2026</div><span class="chip green">96% present</span></div>
+      <div id="cal"></div>
+      <div style="display:flex;gap:14px;margin-top:12px;font-size:11.5px;flex-wrap:wrap"><span><span class="dot-s" style="background:#10B981"></span> Present</span><span><span class="dot-s" style="background:#F59E0B"></span> Late</span><span><span class="dot-s" style="background:#EF4444"></span> Absent</span><span><span class="dot-s" style="background:#8B5CF6"></span> Leave</span><span><span class="dot-s" style="background:#06B6D4"></span> WFH</span></div>
+    </div>
+
+    <div class="card fadeup delay-2">
+      <div class="card-head"><div class="card-title">📋 Last 10 Check-ins</div></div>
+      <div style="overflow:auto"><table class="table">
+        <thead><tr><th>Date</th><th>In</th><th>Out</th><th>Hours</th><th>Method</th><th>Status</th></tr></thead>
+        <tbody>
+          ${[
+            {d:'May 12 (Today)',i:'09:24',o:'—',h:'6h 12m',m:'WiFi',s:'Active',c:'blue'},
+            {d:'May 11',i:'09:18',o:'18:42',h:'9h 24m',m:'WiFi',s:'On-time',c:'green'},
+            {d:'May 10',i:'09:32',o:'18:38',h:'9h 06m',m:'Geo',s:'On-time',c:'green'},
+            {d:'May 09',i:'—',o:'—',h:'—',m:'—',s:'Weekend',c:''},
+            {d:'May 08',i:'09:48',o:'18:20',h:'8h 32m',m:'Selfie',s:'Late 18m',c:'amber'},
+            {d:'May 07',i:'09:14',o:'19:02',h:'9h 48m',m:'WiFi',s:'OT 18m',c:'purple'},
+            {d:'May 06',i:'09:22',o:'18:34',h:'9h 12m',m:'WiFi',s:'On-time',c:'green'},
+            {d:'May 05',i:'09:20',o:'18:30',h:'9h 10m',m:'Geo',s:'On-time',c:'green'},
+            {d:'May 04',i:'—',o:'—',h:'—',m:'Leave',s:'Casual',c:'purple'},
+            {d:'May 03',i:'09:16',o:'18:32',h:'9h 16m',m:'WiFi',s:'On-time',c:'green'},
+          ].map(r=>`<tr><td><b>${r.d}</b></td><td>${r.i}</td><td>${r.o}</td><td>${r.h}</td><td>${r.m==='WiFi'?'<i class="fa-solid fa-wifi" style="color:var(--purple)"></i> WiFi':r.m==='Geo'?'<i class="fa-solid fa-location-dot" style="color:var(--brand)"></i> Geo':r.m==='Selfie'?'<i class="fa-solid fa-face-smile" style="color:var(--cyan)"></i> Selfie':r.m==='Leave'?'<i class="fa-solid fa-plane"></i> Leave':r.m}</td><td><span class="chip ${r.c}">${r.s}</span></td></tr>`).join('')}
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="col-5 vstack">
+    <div class="card fadeup">
+      <div class="card-head"><div class="card-title">⚡ Quick Check-In Methods</div></div>
+      <div class="vstack" style="gap:10px">
+        <div style="padding:14px;background:var(--brand-soft);border:1px solid var(--brand);border-radius:12px;display:flex;gap:12px;align-items:center">
+          <div style="width:42px;height:42px;border-radius:11px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:18px"><i class="fa-solid fa-wifi"></i></div>
+          <div style="flex:1"><div style="font-weight:700;font-size:13.5px">WiFi-Fence (Active)</div><div style="font-size:11.5px;color:var(--ink-3)">Connected to Crownco-HQ-5G · Auto check-in enabled</div></div>
+          <span class="chip green">✓ Today</span>
+        </div>
+        <div style="padding:14px;background:var(--bg-3);border-radius:12px;display:flex;gap:12px;align-items:center;cursor:pointer" onclick="openCheckin()">
+          <div style="width:42px;height:42px;border-radius:11px;background:#ede9fe;color:#5b21b6;display:grid;place-items:center;font-size:18px"><i class="fa-solid fa-face-smile"></i></div>
+          <div style="flex:1"><div style="font-weight:700;font-size:13.5px">Live Selfie + Gesture</div><div style="font-size:11.5px;color:var(--ink-3)">For WFH / remote / field visits</div></div>
+          <button class="btn btn-soft btn-sm">Use</button>
+        </div>
+        <div style="padding:14px;background:var(--bg-3);border-radius:12px;display:flex;gap:12px;align-items:center;cursor:pointer">
+          <div style="width:42px;height:42px;border-radius:11px;background:#dbeafe;color:#1e40af;display:grid;place-items:center;font-size:18px"><i class="fa-solid fa-location-dot"></i></div>
+          <div style="flex:1"><div style="font-weight:700;font-size:13.5px">Geo-Fence GPS</div><div style="font-size:11.5px;color:var(--ink-3)">Within 200m of Mumbai HQ</div></div>
+          <button class="btn btn-ghost btn-sm">Use</button>
+        </div>
+        <div style="padding:14px;background:var(--bg-3);border-radius:12px;display:flex;gap:12px;align-items:center;cursor:pointer">
+          <div style="width:42px;height:42px;border-radius:11px;background:#cffafe;color:#155e75;display:grid;place-items:center;font-size:18px"><i class="fa-solid fa-microphone"></i></div>
+          <div style="flex:1"><div style="font-weight:700;font-size:13.5px">Voice Attendance</div><div style="font-size:11.5px;color:var(--ink-3)">Say "Mark attendance" — voiceprint match</div></div>
+          <button class="btn btn-ghost btn-sm">Use</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fadeup delay-1">
+      <div class="card-head"><div class="card-title">📊 My Attendance Stats</div></div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+        ${[
+          {l:'Present',v:'21',c:'green',sub:'of 22 working days'},
+          {l:'Late',v:'1',c:'amber',sub:'18 min total'},
+          {l:'Overtime',v:'4h 28m',c:'purple',sub:'this month'},
+          {l:'Avg arrival',v:'09:21',c:'blue',sub:'2 min early'},
+        ].map(s=>`<div style="padding:12px;background:var(--bg-3);border-radius:11px"><div style="font-size:11px;color:var(--ink-3);font-weight:600">${s.l}</div><div style="font-size:22px;font-weight:800;color:var(--${s.c==='green'?'green':s.c==='amber'?'amber':s.c==='purple'?'purple':'brand'});margin-top:2px">${s.v}</div><div style="font-size:10.5px;color:var(--ink-3)">${s.sub}</div></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="ai-card fadeup delay-2">
+      <div class="ai-badge"><i class="fa-solid fa-sparkles"></i> AI Insight</div>
+      <div style="margin-top:8px;font-size:13px;line-height:1.5">You're <b>on-time 95.4%</b> this month — top 8% of your team! 🎉 Maintain this streak for the <b>"Perfect Attendance"</b> badge by month-end.</div>
+    </div>
+  </div>
+</div>
+`;
+
+// Calendar
+let cal = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;font-size:11px"><div style="font-weight:700;color:var(--ink-3);text-align:center;padding:4px">S</div><div style="font-weight:700;color:var(--ink-3);text-align:center;padding:4px">M</div><div style="font-weight:700;color:var(--ink-3);text-align:center;padding:4px">T</div><div style="font-weight:700;color:var(--ink-3);text-align:center;padding:4px">W</div><div style="font-weight:700;color:var(--ink-3);text-align:center;padding:4px">T</div><div style="font-weight:700;color:var(--ink-3);text-align:center;padding:4px">F</div><div style="font-weight:700;color:var(--ink-3);text-align:center;padding:4px">S</div>';
+const map = {1:'green',2:'green',3:'green',4:'purple',5:'green',6:'green',7:'green',8:'amber',9:'',10:'green',11:'green',12:'green'};
+const colors = {green:'#10B981',amber:'#F59E0B',red:'#EF4444',purple:'#8B5CF6',blue:'#06B6D4'};
+for(let i=0;i<35;i++){
+  const d = i-4; const has = d>=1 && d<=31;
+  const c = map[d];
+  cal += `<div style="aspect-ratio:1;background:${has?(c?colors[c]:'var(--bg-3)'):'transparent'};color:${has&&c?'#fff':'var(--ink-2)'};border-radius:8px;padding:6px;font-size:11px;font-weight:600;${d===12?'box-shadow:0 0 0 2px var(--brand)':''}">${has?d:''}</div>`;
+}
+cal += '</div>';
+document.getElementById('cal').innerHTML = cal;
+
+function openCheckin(){
+  const m = document.createElement('div'); m.className='modal-bg open';
+  m.innerHTML = `
+    <div class="modal" style="max-width:480px">
+      <div class="modal-head"><div><div style="font-weight:700">Live Selfie + Gesture Check-In</div><div class="tiny muted">3-step AI verification</div></div><button onclick="this.closest('.modal-bg').remove()"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="modal-body">
+        <div style="display:flex;gap:6px;margin-bottom:14px">
+          <div class="chip green" style="flex:1;justify-content:center"><i class="fa-solid fa-check"></i> Location</div>
+          <div class="chip blue" style="flex:1;justify-content:center"><i class="fa-solid fa-circle-notch fa-spin"></i> Selfie</div>
+          <div class="chip" style="flex:1;justify-content:center">Gesture</div>
+        </div>
+        <div class="selfie-frame">
+          <div class="scanline"></div>
+          <i class="fa-solid fa-user-circle" style="font-size:72px;opacity:.55"></i>
+          <div style="position:absolute;top:14px;left:14px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);padding:5px 10px;border-radius:8px;font-size:11px"><span class="dot-s" style="background:#10B981;animation:pulse 1s infinite"></span> Liveness OK</div>
+          <div style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);padding:5px 10px;border-radius:8px;font-size:11px">📍 19.076</div>
+          <div style="position:absolute;bottom:14px;left:14px;right:14px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);padding:8px 12px;border-radius:10px;font-size:12px;display:flex;justify-content:space-between"><span>AI Confidence</span><b id="cconf">94.2%</b></div>
+        </div>
+        <div class="ai-card" style="margin-top:12px;padding:12px"><div class="ai-badge"><i class="fa-solid fa-hand"></i> Gesture Challenge</div><div style="font-size:13.5px;font-weight:700;margin-top:6px">Please <u>blink twice</u> and <u>turn head right</u></div></div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" onclick="this.closest('.modal-bg').remove()">Cancel</button><button class="btn btn-grad" onclick="this.closest('.modal-bg').remove();toast('✅ Re-verified · AI confidence 99.2%','success')"><i class="fa-solid fa-check"></i> Verify</button></div>
+    </div>`;
+  document.body.appendChild(m);
+  let c=94.2; const tk=setInterval(()=>{ c=Math.min(99.6,c+Math.random()*0.5); const el=document.getElementById('cconf'); if(!el){clearInterval(tk);return;} el.textContent=c.toFixed(1)+'%'; },180);
+}
+function reqCorr(){ toast('Correction request opened — submit reason & manager will review','info'); }
+</script>
+</body></html>

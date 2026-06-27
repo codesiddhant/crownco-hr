@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Admin Dashboard — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('dashboard');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb"><a href="dashboard.html">Workspace</a> / Dashboard</div>
+<div class="page-head">
+  <div>
+    <h1 class="page-title">Good morning, Aarav 👋</h1>
+    <div class="page-sub">Here's what's happening across your <b>547 employees · 12 branches</b> today.</div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-ghost"><i class="fa-solid fa-calendar"></i> This Week ▾</button>
+    <button class="btn btn-ghost"><i class="fa-solid fa-filter"></i> All Branches</button>
+    <button class="btn btn-ghost"><i class="fa-solid fa-file-export"></i> Export</button>
+    <button class="btn btn-grad"><i class="fa-solid fa-plus"></i> Quick Action</button>
+  </div>
+</div>
+
+<div class="kpi-grid">
+  ${[
+    {l:'Total Employees',v:'547',t:'+12 this month',c:'b',i:'fa-users'},
+    {l:'Present Today',v:'491', t:'89.8%', c:'g', i:'fa-circle-check'},
+    {l:'Late Today',v:'23', t:'-4 vs avg', c:'a', i:'fa-clock'},
+    {l:'On Leave',v:'33', t:'12 pending', c:'p', i:'fa-plane-departure'},
+    {l:'Productivity Score',v:'78.4', t:'+3.2 WoW', c:'c', i:'fa-bolt'},
+    {l:'Burnout Alerts',v:'7', t:'High risk', c:'r', i:'fa-fire'},
+  ].map((k,i)=>`
+    <div class="kpi fadeup delay-${i+1}">
+      <div class="kpi-icon ${k.c}"><i class="fa-solid ${k.i}"></i></div>
+      <div class="kpi-label">${k.l}</div>
+      <div class="kpi-value">${k.v}</div>
+      <div class="kpi-trend ${k.t.startsWith('-')?'dn':'up'}"><i class="fa-solid fa-arrow-${k.t.startsWith('-')?'down':'up'}"></i> ${k.t}</div>
+    </div>`).join('')}
+</div>
+
+<div style="margin-top:18px" class="grid-12">
+  <div class="card col-8 fadeup">
+    <div class="card-head">
+      <div><div class="card-title">Workforce Productivity & Attendance Trend</div><div class="card-sub">Calls, talk-time, conversion ratio & attendance — last 14 days</div></div>
+      <div style="display:flex;gap:6px"><button class="chip blue">14d</button><button class="chip">30d</button><button class="chip">90d</button></div>
+    </div>
+    <div style="height:300px"><canvas id="trend"></canvas></div>
+  </div>
+
+  <div class="ai-card col-4 fadeup delay-1">
+    <div class="ai-badge"><i class="fa-solid fa-sparkles"></i> AI Insights · Today</div>
+    <div style="margin-top:12px;font-weight:700;font-size:14px;line-height:1.45">3 priority actions detected for HR today</div>
+    <div class="vstack" style="margin-top:12px;gap:10px">
+      <div style="padding:10px;background:var(--bg-2);border-radius:10px;border:1px solid var(--line)">
+        <div style="display:flex;align-items:center;gap:8px"><div class="chip red"><i class="fa-solid fa-triangle-exclamation"></i> Critical</div></div>
+        <div style="font-size:12.5px;margin-top:6px;line-height:1.45">Sales team avg talk-to-conversion dropped <b>18%</b> in Mumbai. Suggest coaching session for 6 SDRs.</div>
+      </div>
+      <div style="padding:10px;background:var(--bg-2);border-radius:10px;border:1px solid var(--line)">
+        <div class="chip amber"><i class="fa-solid fa-fire"></i> Burnout</div>
+        <div style="font-size:12.5px;margin-top:6px;line-height:1.45"><b>7 employees</b> showing fatigue signals (overtime + late mark + low calls). Recommend rest day.</div>
+      </div>
+      <div style="padding:10px;background:var(--bg-2);border-radius:10px;border:1px solid var(--line)">
+        <div class="chip purple"><i class="fa-solid fa-trophy"></i> Reward</div>
+        <div style="font-size:12.5px;margin-top:6px;line-height:1.45">Top 5% performers ready for monthly reward — auto-disburse <b>₹10,000</b> Amazon vouchers?</div>
+      </div>
+    </div>
+    <button class="btn btn-grad btn-sm" style="margin-top:12px;width:100%;justify-content:center">Open Crownco AI →</button>
+  </div>
+
+  <div class="card col-4 fadeup">
+    <div class="card-head"><div><div class="card-title">Attendance Method Mix</div><div class="card-sub">Today's check-in breakdown</div></div></div>
+    <div style="height:230px"><canvas id="donut"></canvas></div>
+    <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px"><span><span class="dot-s" style="background:#2563EB"></span> Geo-fence 342</span><span><span class="dot-s" style="background:#8B5CF6"></span> WiFi 118</span><span><span class="dot-s" style="background:#06B6D4"></span> Selfie 31</span></div>
+  </div>
+
+  <div class="card col-4 fadeup delay-1">
+    <div class="card-head"><div><div class="card-title">Attrition Risk Forecast</div><div class="card-sub">AI · next 90 days</div></div><div class="chip red">12 High</div></div>
+    <div style="height:230px"><canvas id="attrition"></canvas></div>
+    <div style="font-size:11.5px;color:var(--ink-3);margin-top:8px">Drivers: salary gap (42%), overtime (28%), engagement drop (18%)</div>
+  </div>
+
+  <div class="card col-4 fadeup delay-2">
+    <div class="card-head"><div><div class="card-title">Salary Distribution</div><div class="card-sub">By department · monthly</div></div></div>
+    <div style="height:230px"><canvas id="salary"></canvas></div>
+  </div>
+
+  <div class="card col-7 fadeup">
+    <div class="card-head">
+      <div><div class="card-title">Attendance Heatmap</div><div class="card-sub">Hour × Day · last 7 days</div></div>
+      <span class="chip">⌘ Peak 10–12 AM</span>
+    </div>
+    <div id="heatmap"></div>
+    <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11.5px;color:var(--ink-3)">Less <div class="heatcell" style="background:#dbeafe;width:14px"></div><div class="heatcell" style="background:#93c5fd;width:14px"></div><div class="heatcell" style="background:#3b82f6;width:14px"></div><div class="heatcell" style="background:#1e40af;width:14px"></div> More</div>
+  </div>
+
+  <div class="card col-5 fadeup delay-1">
+    <div class="card-head"><div><div class="card-title">Top Performers · This Week</div><div class="card-sub">Auto-ranked by Crownco AI</div></div><a href="rewards.html" class="chip blue">Reward all</a></div>
+    <div id="topperf"></div>
+  </div>
+
+  <div class="card col-6 fadeup">
+    <div class="card-head">
+      <div><div class="card-title">Real-time Employee Activity</div><div class="card-sub">Live feed · auto-refresh</div></div>
+      <span class="chip green"><span class="dot-s" style="background:#10B981;animation:pulse 1.4s infinite"></span> LIVE</span>
+    </div>
+    <div class="tl" id="activity"></div>
+  </div>
+
+  <div class="card col-6 fadeup delay-1">
+    <div class="card-head"><div><div class="card-title">Recent Approvals</div><div class="card-sub">Leaves, expenses, corrections</div></div><a href="leave.html" class="chip">View all</a></div>
+    <div style="overflow:auto"><table class="table">
+      <thead><tr><th>Employee</th><th>Type</th><th>Days</th><th>AI Risk</th><th>Action</th></tr></thead>
+      <tbody id="approvals"></tbody>
+    </table></div>
+  </div>
+
+  <div class="card col-12 fadeup">
+    <div class="card-head">
+      <div><div class="card-title">Team Comparison · Productivity vs Attendance</div><div class="card-sub">By department</div></div>
+      <div style="display:flex;gap:6px"><button class="chip">All</button><button class="chip blue">Sales</button><button class="chip">Support</button><button class="chip">Field</button></div>
+    </div>
+    <div style="height:260px"><canvas id="teamcomp"></canvas></div>
+  </div>
+</div>
+`;
+
+// Charts
+const ct = chartTheme();
+Chart.defaults.color = ct.text;
+Chart.defaults.borderColor = ct.grid;
+Chart.defaults.font.family = 'Inter';
+
+new Chart(document.getElementById('trend'),{
+  type:'line',
+  data:{labels:['Apr 28','Apr 29','Apr 30','May 1','May 2','May 3','May 4','May 5','May 6','May 7','May 8','May 9','May 10','May 11'],
+  datasets:[
+    {label:'Productivity',data:[68,72,70,75,73,76,80,78,82,79,81,85,83,87],borderColor:'#2563EB',backgroundColor:'rgba(37,99,235,.12)',fill:true,tension:.4,borderWidth:2.5,pointRadius:0,pointHoverRadius:5},
+    {label:'Attendance %',data:[88,90,89,91,92,90,93,94,92,95,93,94,96,95],borderColor:'#10B981',backgroundColor:'transparent',tension:.4,borderWidth:2.5,pointRadius:0,pointHoverRadius:5,borderDash:[6,4]},
+    {label:'Conversion',data:[22,24,21,26,28,25,30,29,32,30,33,35,34,38],borderColor:'#8B5CF6',backgroundColor:'transparent',tension:.4,borderWidth:2.5,pointRadius:0,pointHoverRadius:5}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:6}}},scales:{y:{grid:{color:ct.grid}},x:{grid:{display:false}}}}
+});
+
+new Chart(document.getElementById('donut'),{
+  type:'doughnut',
+  data:{labels:['Geo-fence','WiFi','Selfie+Gesture'],datasets:[{data:[342,118,31],backgroundColor:['#2563EB','#8B5CF6','#06B6D4'],borderWidth:0,hoverOffset:8}]},
+  options:{cutout:'72%',plugins:{legend:{display:false}}}
+});
+
+new Chart(document.getElementById('attrition'),{
+  type:'bar',
+  data:{labels:['Low','Medium','High','Critical'],datasets:[{data:[420,77,38,12],backgroundColor:['#10B981','#F59E0B','#EF4444','#991B1B'],borderRadius:8}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:ct.grid}},x:{grid:{display:false}}}}
+});
+
+new Chart(document.getElementById('salary'),{
+  type:'bar',
+  data:{labels:['Sales','Support','Eng','HR','Mktg','Ops','Fin','Field'],datasets:[{label:'Avg Salary (₹k)',data:[65,42,120,58,68,55,75,38],backgroundColor:'rgba(37,99,235,.85)',borderRadius:6}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:ct.grid}},x:{grid:{display:false}}}}
+});
+
+new Chart(document.getElementById('teamcomp'),{
+  type:'radar',
+  data:{labels:['Attendance','Productivity','Conversion','Follow-up','Communication','Discipline'],datasets:[
+    {label:'Sales',data:[88,82,76,84,80,86],backgroundColor:'rgba(37,99,235,.15)',borderColor:'#2563EB',borderWidth:2,pointBackgroundColor:'#2563EB'},
+    {label:'Support',data:[94,78,68,90,88,92],backgroundColor:'rgba(139,92,246,.15)',borderColor:'#8B5CF6',borderWidth:2,pointBackgroundColor:'#8B5CF6'},
+    {label:'Field',data:[80,86,80,72,76,78],backgroundColor:'rgba(6,182,212,.15)',borderColor:'#06B6D4',borderWidth:2,pointBackgroundColor:'#06B6D4'}
+  ]},
+  options:{plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:6}}},scales:{r:{grid:{color:ct.grid},pointLabels:{font:{size:11,weight:'600'}},ticks:{display:false}}}}
+});
+
+// Heatmap
+const heat = document.getElementById('heatmap');
+let hh = '<div class="heatmap">';
+for(let d=0;d<7;d++) for(let h=0;h<24;h++){
+  const v = Math.floor(Math.random()*5);
+  const colors=['#F1F5F9','#dbeafe','#93c5fd','#3b82f6','#1e40af'];
+  hh += `<div class="heatcell" style="background:${colors[v]}" title="${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][d]} ${h}:00"></div>`;
+}
+hh+='</div>'; heat.innerHTML = hh;
+
+// Top performers
+const topList = [
+  {n:'Priya Mehta',r:'Senior SDR',s:96,c:47,rev:'₹2.4L',m:'gold'},
+  {n:'Karan Singh',r:'Account Mgr',s:92,c:41,rev:'₹1.8L',m:'silver'},
+  {n:'Neha Iyer',r:'Sales Lead',s:89,c:38,rev:'₹1.5L',m:'bronze'},
+  {n:'Rohan Kapoor',r:'SDR',s:87,c:35,rev:'₹1.2L',m:''},
+  {n:'Ananya Verma',r:'Field Officer',s:85,c:29,rev:'₹98k',m:''},
+];
+document.getElementById('topperf').innerHTML = topList.map((p,i)=>`
+  <div class="lb-row">
+    <div class="lb-rank ${p.m}">${i+1}</div>
+    <div class="avatar sm">${initials(p.n)}</div>
+    <div style="flex:1"><div style="font-weight:600;font-size:13px">${p.n}</div><div style="font-size:11.5px;color:var(--ink-3)">${p.r} · ${p.c} calls · ${p.rev}</div></div>
+    <div style="text-align:right"><div style="font-weight:700;color:var(--brand)">${p.s}</div><div style="font-size:10.5px;color:var(--ink-3)">score</div></div>
+  </div>
+`).join('');
+
+// Activity feed
+const acts = [
+  {t:'green',w:'Priya M.',a:'checked in via WiFi-fence',ts:'Just now'},
+  {t:'',w:'Karan S.',a:'closed lead worth ₹85,000',ts:'2m ago'},
+  {t:'amber',w:'Rohan K.',a:'late mark detected — 23 min',ts:'8m ago'},
+  {t:'',w:'AI Bot',a:'generated WhatsApp report for 142 employees',ts:'12m ago'},
+  {t:'red',w:'Sneha P.',a:'flagged: possible GPS spoof attempt',ts:'18m ago'},
+  {t:'green',w:'Vikram R.',a:'completed field visit + selfie verified',ts:'24m ago'},
+  {t:'',w:'Ananya V.',a:'applied for leave (3 days) — AI risk score 28%',ts:'31m ago'},
+];
+document.getElementById('activity').innerHTML = acts.map(x=>`
+  <div class="tl-item ${x.t}">
+    <div style="font-size:13px"><b>${x.w}</b> ${x.a}</div>
+    <div style="font-size:11px;color:var(--ink-3)">${x.ts}</div>
+  </div>
+`).join('');
+
+// Approvals
+const ap = [
+  {n:'Priya Mehta',t:'Casual Leave',d:'3 days',r:'Low',c:'green'},
+  {n:'Rohan Kapoor',t:'Sick Leave',d:'1 day',r:'Low',c:'green'},
+  {n:'Vikram Rao',t:'WFH',d:'5 days',r:'Medium',c:'amber'},
+  {n:'Sneha Patel',t:'Casual Leave',d:'7 days',r:'High',c:'red'},
+];
+document.getElementById('approvals').innerHTML = ap.map(p=>`
+  <tr>
+    <td><div class="user-cell"><div class="avatar sm">${initials(p.n)}</div><div><div class="name">${p.n}</div><div class="sub">Sales</div></div></div></td>
+    <td>${p.t}</td><td>${p.d}</td><td><span class="chip ${p.c}">${p.r}</span></td>
+    <td><button class="btn btn-sm btn-soft"><i class="fa-solid fa-check"></i></button> <button class="btn btn-sm btn-ghost"><i class="fa-solid fa-xmark"></i></button></td>
+  </tr>
+`).join('');
+</script>
+</body></html>

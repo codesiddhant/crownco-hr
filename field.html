@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Employee Tracking — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('field');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">Attendance & Work / Field Tracking</div>
+<div class="page-head">
+  <div><h1 class="page-title">Field Employee Tracking</h1><div class="page-sub">Live location · route playback · visit verification · client signatures</div></div>
+  <div style="display:flex;gap:8px"><span class="chip green"><span class="dot-s" style="background:#10B981;animation:pulse 1.2s infinite"></span> 28 LIVE</span><button class="btn btn-ghost"><i class="fa-solid fa-route"></i> Replay Routes</button><button class="btn btn-grad"><i class="fa-solid fa-plus"></i> Assign Visit</button></div>
+</div>
+
+<div class="grid-12">
+  <div class="card col-8 fadeup" style="padding:0;overflow:hidden">
+    <div class="map" style="height:520px;border-radius:0;border:none">
+      <div class="map-grid"></div>
+      <!-- Routes -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+        <path d="M 100 400 Q 250 300, 350 280 T 600 200" stroke="#2563EB" stroke-width="3" stroke-dasharray="6,4" fill="none" opacity=".7"/>
+        <path d="M 500 480 Q 400 380, 480 320 T 650 380" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="6,4" fill="none" opacity=".7"/>
+      </svg>
+      <div class="pin green" style="left:14%;top:74%"><span style="position:absolute;top:38px;left:-40px;transform:rotate(45deg);background:#fff;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;box-shadow:var(--shadow);white-space:nowrap;color:#0F172A">Vikram · Start</span></div>
+      <div class="pin amber" style="left:46%;top:54%"></div>
+      <div class="pin amber" style="left:60%;top:38%"></div>
+      <div class="pin" style="left:78%;top:30%"><span style="position:absolute;top:38px;left:-30px;transform:rotate(45deg);background:#2563EB;color:#fff;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap">Now</span></div>
+      <div class="pin red" style="left:66%;top:75%"></div>
+      <div class="pin green" style="left:34%;top:30%"></div>
+
+      <div style="position:absolute;left:16px;top:16px;background:rgba(255,255,255,.95);padding:12px 14px;border-radius:12px;box-shadow:var(--shadow);min-width:200px">
+        <div style="font-weight:700;font-size:13px;margin-bottom:6px"><i class="fa-solid fa-user-clock" style="color:var(--brand)"></i> Vikram Rao · Field Officer</div>
+        <div style="display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--ink-2)">
+          <div>📍 Currently at: <b>Andheri East · Client A</b></div>
+          <div>🛣 Distance today: <b>34.2 km</b></div>
+          <div>⏱ Time on site: <b>22 min</b></div>
+          <div>✅ Visits done: <b>4 / 6</b></div>
+        </div>
+      </div>
+
+      <div style="position:absolute;right:16px;bottom:16px;display:flex;flex-direction:column;gap:4px">
+        <button class="icon-btn"><i class="fa-solid fa-plus"></i></button>
+        <button class="icon-btn"><i class="fa-solid fa-minus"></i></button>
+        <button class="icon-btn"><i class="fa-solid fa-location-crosshairs"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-4 vstack">
+    <div class="card fadeup">
+      <div class="card-head"><div class="card-title">🛤 Today's Visit Timeline</div><span class="chip blue">4/6 done</span></div>
+      <div class="tl">
+        ${[
+          {t:'09:14',c:'green',n:'Started · Bandra (Home)',s:'Selfie ✓ GPS lock'},
+          {t:'10:32',c:'green',n:'Client A · Lower Parel',s:'22 min · QR scanned · Signature ✓'},
+          {t:'11:48',c:'green',n:'Client B · BKC Tower',s:'18 min · Photo proof uploaded'},
+          {t:'13:20',c:'green',n:'Lunch · Phoenix Mall',s:'45 min · Auto-flagged break'},
+          {t:'14:15',c:'amber',n:'Client C · Andheri East',s:'In progress · 22 min'},
+          {t:'16:00',c:'',n:'Client D · Powai (scheduled)',s:'ETA: 12 min'},
+          {t:'18:00',c:'',n:'Wrap-up · End-of-day report',s:'Auto WhatsApp'},
+        ].map(x=>`<div class="tl-item ${x.c}"><div style="font-size:11.5px;color:var(--ink-3);font-weight:600">${x.t}</div><div style="font-weight:600;font-size:13px;margin-top:2px">${x.n}</div><div style="font-size:11.5px;color:var(--ink-3)">${x.s}</div></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card fadeup delay-1">
+      <div class="card-head"><div class="card-title">Active Field Force</div><span class="chip green">28 live</span></div>
+      ${MOCK_EMPLOYEES.slice(0,5).map((e,i)=>`
+        <div class="lb-row">
+          <div class="avatar sm">${e.initials}</div>
+          <div style="flex:1"><div style="font-weight:600;font-size:13px">${e.name}</div><div style="font-size:11px;color:var(--ink-3)">${['Andheri','BKC','Powai','Worli','Bandra'][i]} · ${['22','15','30','08','45'][i]}min site</div></div>
+          <span class="dot-s" style="background:#10B981;animation:pulse 1.2s infinite"></span>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="card fadeup delay-2">
+      <div class="card-head"><div class="card-title">Visit Verification</div></div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;font-size:12px">
+        <div style="padding:11px;background:var(--bg-3);border-radius:10px;text-align:center"><i class="fa-solid fa-face-smile" style="font-size:18px;color:var(--brand)"></i><div style="font-weight:700;margin-top:4px">Selfie</div><div class="muted" style="font-size:10.5px">Mandatory at site</div></div>
+        <div style="padding:11px;background:var(--bg-3);border-radius:10px;text-align:center"><i class="fa-solid fa-qrcode" style="font-size:18px;color:var(--purple)"></i><div style="font-weight:700;margin-top:4px">QR Scan</div><div class="muted" style="font-size:10.5px">Client poster</div></div>
+        <div style="padding:11px;background:var(--bg-3);border-radius:10px;text-align:center"><i class="fa-solid fa-pen-nib" style="font-size:18px;color:var(--cyan)"></i><div style="font-weight:700;margin-top:4px">e-Sign</div><div class="muted" style="font-size:10.5px">Customer</div></div>
+        <div style="padding:11px;background:var(--bg-3);border-radius:10px;text-align:center"><i class="fa-solid fa-location-crosshairs" style="font-size:18px;color:var(--green)"></i><div style="font-weight:700;margin-top:4px">GPS Lock</div><div class="muted" style="font-size:10.5px">±5m accuracy</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+</script>
+</body></html>

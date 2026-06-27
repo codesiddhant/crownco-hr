@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('notifications');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">System / Notifications</div>
+<div class="page-head">
+  <div><h1 class="page-title">Notification Center</h1><div class="page-sub">In-app · Email · WhatsApp · Push · Smart reminders</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-ghost"><i class="fa-solid fa-check-double"></i> Mark all read</button><button class="btn btn-grad"><i class="fa-solid fa-gear"></i> Preferences</button></div>
+</div>
+
+<div class="grid-12">
+  <div class="col-7 fadeup">
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="display:flex;border-bottom:1px solid var(--line);padding:0 14px">
+        ${['All (37)','Unread (7)','Mentions','Alerts','Approvals'].map((t,i)=>`<button style="padding:12px 14px;border-bottom:2px solid ${i===0?'var(--brand)':'transparent'};color:${i===0?'var(--brand)':'var(--ink-3)'};font-weight:600;font-size:13px">${t}</button>`).join('')}
+      </div>
+      <div class="vstack" style="padding:0;gap:0">
+        ${[
+          {i:'fa-triangle-exclamation',c:'red',t:'GPS spoof detected · Yash Khan',d:'Possible fake location at check-in. Confidence 62%.',ts:'2m ago',new:true},
+          {i:'fa-fire',c:'amber',t:'Burnout alert · Sneha Patel',d:'Productivity dropped 42% over 10 days. Recommend rest.',ts:'18m ago',new:true},
+          {i:'fa-plane-departure',c:'blue',t:'Leave approval needed',d:'Priya Mehta — 14–18 May · AI risk 62%',ts:'1h ago',new:true},
+          {i:'fa-trophy',c:'purple',t:'Top performer streak 🏆',d:'Priya Mehta has 7-day call streak — auto-reward?',ts:'2h ago',new:true},
+          {i:'fa-circle-check',c:'green',t:'Daily WhatsApp reports sent',d:'AI sent reports to 542 employees · open rate 94%',ts:'3h ago'},
+          {i:'fa-user-plus',c:'blue',t:'New hire onboarded',d:'Aisha Patel · Engineer · Day 1',ts:'5h ago'},
+          {i:'fa-receipt',c:'cyan',t:'Reimbursement claim',d:'Vikram R. submitted ₹3,420 — AI verified',ts:'Yest.'},
+        ].map(n=>`
+          <div style="padding:14px 18px;border-top:1px solid var(--line);display:flex;gap:12px;cursor:pointer;background:${n.new?'var(--brand-soft)':'transparent'}" onmouseover="this.style.background='var(--bg-3)'" onmouseout="this.style.background='${n.new?'var(--brand-soft)':'transparent'}'">
+            <div style="width:36px;height:36px;border-radius:10px;background:${n.c==='red'?'#fee2e2':n.c==='amber'?'#fef3c7':n.c==='green'?'#d1fae5':n.c==='blue'?'#dbeafe':n.c==='purple'?'#ede9fe':'#cffafe'};color:${n.c==='red'?'#991b1b':n.c==='amber'?'#92400e':n.c==='green'?'#065f46':n.c==='blue'?'#1e40af':n.c==='purple'?'#5b21b6':'#155e75'};display:grid;place-items:center;flex-shrink:0"><i class="fa-solid ${n.i}"></i></div>
+            <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13.5px">${n.t} ${n.new?'<span class="dot-s" style="background:var(--brand);margin-left:6px"></span>':''}</div><div style="font-size:12.5px;color:var(--ink-3);margin-top:2px">${n.d}</div></div>
+            <div style="font-size:11px;color:var(--ink-3);white-space:nowrap">${n.ts}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-5 vstack">
+    <div class="card fadeup">
+      <div class="card-head"><div class="card-title">📲 WhatsApp Templates</div><button class="btn btn-soft btn-sm"><i class="fa-solid fa-plus"></i> New</button></div>
+      <div style="background:#dcf8c6;color:#0F172A;padding:12px 14px;border-radius:14px 14px 4px 14px;font-size:12.5px;line-height:1.6;font-family:ui-monospace,monospace;margin-left:auto;max-width:90%;white-space:pre-wrap">🌟 *Daily Report — {{name}}*
+
+📞 Calls made: *{{calls}}*
+⏱️ Talk-time: *{{talktime}}*
+✅ Qualified: *{{leads}} leads*
+🎯 Conversion: *{{conv}}%*
+💰 Revenue: *₹{{revenue}}*
+🏆 Rank: *#{{rank}}*
+
+💡 AI Tip: {{tip}}
+
+— Crownco AI</div>
+      <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3)"><span>Delivered today: <b>542 / 547</b></span><span>Open rate: <b style="color:var(--green)">94%</b></span></div>
+    </div>
+
+    <div class="card fadeup delay-1">
+      <div class="card-head"><div class="card-title">📧 Email Templates</div></div>
+      <div class="vstack" style="gap:6px">
+        ${['Leave approval','Welcome onboard','Performance warning','Birthday wish','Reward congrats','Payslip dispatch'].map(t=>`<div style="padding:10px;background:var(--bg-3);border-radius:9px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600"><i class="fa-solid fa-envelope" style="color:var(--brand)"></i> ${t} <button class="btn btn-ghost btn-sm" style="margin-left:auto"><i class="fa-solid fa-pen"></i></button></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card fadeup delay-2">
+      <div class="card-head"><div class="card-title">🔔 Push Channels</div></div>
+      <div class="vstack" style="gap:8px;font-size:13px">
+        ${[
+          {n:'In-app',e:true,c:'brand'},
+          {n:'Email digest',e:true,c:'brand'},
+          {n:'WhatsApp (AI reports)',e:true,c:'green'},
+          {n:'Push (mobile)',e:true,c:'purple'},
+          {n:'SMS (critical only)',e:false,c:''},
+          {n:'Slack integration',e:true,c:'cyan'},
+        ].map(c=>`<div style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-${c.n.includes('Email')?'envelope':c.n.includes('WhatsApp')?'whatsapp" style="display:none"></i><i class="fa-brands fa-whatsapp':c.n.includes('Push')?'mobile':c.n.includes('SMS')?'sms':c.n.includes('Slack')?'slack" style="display:none"></i><i class="fa-brands fa-slack':'bell'}" style="color:var(--brand);width:18px"></i><span style="flex:1">${c.n}</span><label class="switch"><input type="checkbox" ${c.e?'checked':''}><span style="display:inline-block;width:34px;height:20px;background:${c.e?'var(--brand)':'var(--line-2)'};border-radius:99px;position:relative;cursor:pointer"><span style="position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:${c.e?'16px':'2px'};transition:.2s"></span></span></label></div>`).join('')}
+      </div>
+    </div>
+  </div>
+</div>
+`;
+</script>
+</body></html>

@@ -460,7 +460,7 @@ function buildAttendance(employees: Employee[]): AttendanceRecord[] {
       if (isWeekend) {
         status = "weekend";
       } else {
-        const roll = Math.random() * 100;
+        const roll = faker.number.float({ min: 0, max: 100, fractionDigits: 6 });
         if (roll < emp.attendanceRate - 6) {
           status = "present";
           checkIn = `${faker.number.int({ min: 9, max: 9 })}:${faker.number.int({ min: 0, max: 35 }).toString().padStart(2, "0")}`;

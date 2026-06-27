@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Payslip — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('my-payslip');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">My Workspace / My Payslip</div>
+<div class="page-head">
+  <div><h1 class="page-title">My Payslip</h1><div class="page-sub">Salary, incentives, tax breakdown & history</div></div>
+  <div style="display:flex;gap:8px"><select class="btn btn-ghost"><option>May 2026</option><option>Apr 2026</option><option>Mar 2026</option></select><button class="btn btn-grad"><i class="fa-solid fa-download"></i> Download PDF</button></div>
+</div>
+
+<div class="grid-12">
+  <div class="col-8 vstack">
+    <div class="card fadeup" style="padding:0;overflow:hidden">
+      <div style="padding:20px 24px;background:linear-gradient(135deg,#8B5CF6,#A855F7);color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+        <div>
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;opacity:.85">Net Pay · May 2026</div>
+          <div style="font-size:42px;font-weight:800;margin-top:4px">₹68,400</div>
+          <div style="font-size:12px;opacity:.85">Credited on 31 May 2026 · HDFC Bank ••• 4218</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;opacity:.85">EMP ID</div>
+          <div style="font-weight:800;font-size:15px">CRO-1042</div>
+          <div style="font-size:11px;opacity:.85;margin-top:6px">${state.user.role}</div>
+        </div>
+      </div>
+
+      <div style="padding:20px 24px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+          <div>
+            <b style="font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)">Earnings</b>
+            <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:13px">
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Basic Salary</span><b>₹38,000</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>House Rent Allowance</span><b>₹14,000</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Performance Incentive <span class="chip green" style="font-size:10px">AI</span></span><b style="color:var(--green)">₹12,400</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Overtime (12h)</span><b style="color:var(--green)">₹4,000</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Top performer bonus</span><b style="color:var(--green)">₹4,000</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Conveyance</span><b>₹1,600</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;font-weight:800;color:var(--brand)"><span>Gross Earnings</span><b>₹74,000</b></div>
+            </div>
+          </div>
+          <div>
+            <b style="font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)">Deductions</b>
+            <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:13px">
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Provident Fund</span><b>₹2,400</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>ESI</span><b>₹450</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>TDS · Income Tax</span><b>₹1,150</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Professional Tax</span><b>₹200</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Leave deduction (0 days)</span><b>₹0</b></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;font-weight:800;color:var(--red)"><span>Total Deductions</span><b>₹4,200</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--brand),var(--purple));color:#fff;border-radius:12px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:700;font-size:15px">💰 Net Take-home</span>
+          <b style="font-size:22px">₹68,400</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fadeup delay-1">
+      <div class="card-head"><div><div class="card-title">📜 Last 12 Months</div></div></div>
+      <div style="height:230px"><canvas id="hist"></canvas></div>
+    </div>
+  </div>
+
+  <div class="col-4 vstack">
+    <div class="card fadeup">
+      <div class="card-head"><div class="card-title">📊 Pay Breakdown</div></div>
+      <div style="height:200px"><canvas id="pie"></canvas></div>
+    </div>
+
+    <div class="card fadeup delay-1">
+      <div class="card-head"><div class="card-title">📂 Payslip History</div></div>
+      <div class="vstack" style="gap:6px">
+        ${[
+          {m:'May 2026',n:'₹68,400',s:'Current',c:'blue'},
+          {m:'Apr 2026',n:'₹64,200',s:'Paid',c:'green'},
+          {m:'Mar 2026',n:'₹71,800',s:'Paid',c:'green'},
+          {m:'Feb 2026',n:'₹58,400',s:'Paid',c:'green'},
+          {m:'Jan 2026',n:'₹62,000',s:'Paid',c:'green'},
+          {m:'Dec 2025',n:'₹89,200',s:'+Bonus',c:'purple'},
+        ].map(p=>`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg-3);border-radius:10px"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--brand)"></i><div style="flex:1"><div style="font-weight:700;font-size:12.5px">${p.m}</div><div style="font-size:11px;color:var(--ink-3)">${p.n}</div></div><span class="chip ${p.c}">${p.s}</span><button class="btn btn-ghost btn-sm"><i class="fa-solid fa-download"></i></button></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card fadeup delay-2">
+      <div class="card-head"><div class="card-title">🧾 Reimbursement Claims</div><button class="btn btn-soft btn-sm"><i class="fa-solid fa-plus"></i></button></div>
+      <div class="vstack" style="gap:6px">
+        <div style="padding:10px;background:var(--bg-3);border-radius:10px"><div style="display:flex;justify-content:space-between"><span style="font-weight:700;font-size:12.5px">Conference travel</span><b>₹4,500</b></div><div style="font-size:11px;color:var(--ink-3);margin-top:2px">May 06 · <span class="chip green">Approved</span></div></div>
+        <div style="padding:10px;background:var(--bg-3);border-radius:10px"><div style="display:flex;justify-content:space-between"><span style="font-weight:700;font-size:12.5px">Internet allowance</span><b>₹2,100</b></div><div style="font-size:11px;color:var(--ink-3);margin-top:2px">May 02 · <span class="chip green">AI verified</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+const ct = chartTheme();
+new Chart(document.getElementById('hist'),{
+  type:'bar',data:{labels:['Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'],datasets:[
+    {label:'Net Pay',data:[58,60,62,61,64,66,89,62,58,72,64,68],backgroundColor:(ctx)=>ctx.dataIndex===11?'#8B5CF6':'#CBD5E1',borderRadius:6}
+  ]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:ct.grid},ticks:{callback:(v)=>'₹'+v+'k'}},x:{grid:{display:false}}}}
+});
+new Chart(document.getElementById('pie'),{
+  type:'doughnut',data:{labels:['Basic','HRA','Incentive','OT','Other'],datasets:[{data:[38,14,12.4,4,5.6],backgroundColor:['#8B5CF6','#06B6D4','#10B981','#F59E0B','#A855F7'],borderWidth:0}]},options:{cutout:'68%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:6,font:{size:10}}}}}
+});
+</script>
+</body></html>

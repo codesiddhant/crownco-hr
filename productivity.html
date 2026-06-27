@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Productivity Intelligence — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('productivity');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">Attendance & Work / AI Productivity Intelligence</div>
+<div class="page-head">
+  <div><h1 class="page-title">AI Productivity Intelligence</h1><div class="page-sub">CRM activity · calls · talk-time · conversions — analyzed by Crownco AI</div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-ghost"><i class="fa-solid fa-calendar"></i> Today</button>
+    <button class="btn btn-ghost"><i class="fa-solid fa-users"></i> All Teams</button>
+    <button class="btn btn-grad"><i class="fa-brands fa-whatsapp"></i> Send WhatsApp Reports</button>
+  </div>
+</div>
+
+<div class="kpi-grid" style="margin-bottom:18px">
+  ${[
+    {l:'Total Calls',v:'4,212', c:'b', i:'fa-phone',t:'+8% WoW'},
+    {l:'Talk Time',v:'218h', c:'g', i:'fa-headset',t:'+12% WoW'},
+    {l:'Qualified Leads',v:'1,108', c:'p', i:'fa-bullseye',t:'+15% WoW'},
+    {l:'Conv. Ratio',v:'26.3%', c:'c', i:'fa-chart-line',t:'+3.2 WoW'},
+    {l:'Missed F/U',v:'47', c:'a', i:'fa-clock-rotate-left',t:'-12 WoW'},
+    {l:'Avg Productivity',v:'78.4', c:'r', i:'fa-bolt',t:'Score'},
+  ].map((k,i)=>`
+    <div class="kpi fadeup delay-${i+1}"><div class="kpi-icon ${k.c}"><i class="fa-solid ${k.i}"></i></div><div class="kpi-label">${k.l}</div><div class="kpi-value">${k.v}</div><div class="kpi-trend up">${k.t}</div></div>
+  `).join('')}
+</div>
+
+<div class="grid-12">
+  <div class="ai-card col-12 fadeup">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap">
+      <div style="flex:1;min-width:280px">
+        <div class="ai-badge"><i class="fa-solid fa-sparkles"></i> AI Insight · Workforce-wide</div>
+        <div style="margin-top:10px;font-size:16px;font-weight:700;line-height:1.4">"Best productivity window today is 11 AM – 2 PM. 6 employees in Mumbai dropped 18% in talk-to-conversion."</div>
+        <div style="margin-top:8px;font-size:13px;color:var(--ink-3);line-height:1.55">Recommended: schedule cold-call sprints during peak window. Auto-trigger 1:1 coaching for SDRs with conversion drop > 15%. WhatsApp report delivery time: optimize to 8:45 PM (highest open-rate).</div>
+      </div>
+      <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm">Dismiss</button><button class="btn btn-grad btn-sm">Apply suggestions</button></div>
+    </div>
+  </div>
+
+  <div class="card col-8 fadeup">
+    <div class="card-head"><div><div class="card-title">Conversion Funnel · This Week</div><div class="card-sub">Calls → Connect → Qualify → Demo → Close</div></div></div>
+    <div style="display:flex;flex-direction:column;gap:8px;padding:14px 0">
+      ${[
+        {l:'Calls Made',v:4212,p:100,c:'#2563EB'},
+        {l:'Connected',v:2987,p:71,c:'#3B82F6'},
+        {l:'Qualified',v:1108,p:26,c:'#8B5CF6'},
+        {l:'Demo Booked',v:412,p:9.8,c:'#06B6D4'},
+        {l:'Closed Won',v:118,p:2.8,c:'#10B981'},
+      ].map(f=>`
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:120px;font-size:13px;font-weight:600">${f.l}</div>
+          <div style="flex:1;background:var(--bg-3);border-radius:8px;height:32px;position:relative;overflow:hidden"><div style="width:${f.p}%;height:100%;background:${f.c};border-radius:8px;display:flex;align-items:center;padding:0 12px;color:#fff;font-weight:700;font-size:12px">${f.v.toLocaleString()}</div></div>
+          <div style="width:50px;text-align:right;font-weight:700;color:${f.c}">${f.p}%</div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+
+  <div class="card col-4 fadeup delay-1">
+    <div class="card-head"><div><div class="card-title">Team Ranking</div><div class="card-sub">By avg productivity score</div></div></div>
+    ${[
+      {n:'Sales · Mumbai',s:92,t:'48 ppl'},
+      {n:'Sales · Delhi',s:88,t:'34 ppl'},
+      {n:'Support · BLR',s:84,t:'42 ppl'},
+      {n:'Field · Pune',s:79,t:'28 ppl'},
+      {n:'Sales · HYD',s:74,t:'22 ppl'},
+      {n:'Support · DEL',s:71,t:'18 ppl'},
+    ].map((t,i)=>`
+      <div class="lb-row">
+        <div class="lb-rank ${['gold','silver','bronze','','',''][i]}">${i+1}</div>
+        <div style="flex:1"><div style="font-weight:600;font-size:13px">${t.n}</div><div style="font-size:11px;color:var(--ink-3)">${t.t}</div></div>
+        <div style="text-align:right"><div style="font-weight:700;color:var(--brand)">${t.s}</div></div>
+      </div>
+    `).join('')}
+  </div>
+
+  <div class="card col-6 fadeup">
+    <div class="card-head"><div><div class="card-title">Calls vs Conversions · 14 days</div></div></div>
+    <div style="height:240px"><canvas id="cc"></canvas></div>
+  </div>
+
+  <div class="card col-6 fadeup delay-1">
+    <div class="card-head"><div><div class="card-title">Productivity by Hour</div><div class="card-sub">Peak window detection</div></div></div>
+    <div style="height:240px"><canvas id="hour"></canvas></div>
+  </div>
+
+  <div class="card col-12 fadeup">
+    <div class="card-head"><div><div class="card-title">Individual Performance Matrix</div><div class="card-sub">Auto-ranked employees · click row to see AI report</div></div>
+      <div style="display:flex;gap:6px"><button class="chip blue">All</button><button class="chip">Sales</button><button class="chip">Support</button><button class="chip">Field</button></div></div>
+    <div style="overflow:auto"><table class="table">
+      <thead><tr><th>Employee</th><th>Calls</th><th>Talk-time</th><th>Qualified</th><th>Conv. %</th><th>Follow-up</th><th>Score</th><th>AI Verdict</th></tr></thead>
+      <tbody id="prod-rows"></tbody>
+    </table></div>
+  </div>
+</div>
+`;
+
+const ct = chartTheme();
+new Chart(document.getElementById('cc'),{
+  type:'bar',
+  data:{labels:Array.from({length:14},(_,i)=>'D-'+(13-i)),datasets:[
+    {label:'Calls',data:[280,310,295,320,340,300,360,380,330,400,420,395,440,460],backgroundColor:'#2563EB',borderRadius:5},
+    {label:'Qualified',data:[60,68,62,72,80,68,84,92,76,98,108,100,114,124],backgroundColor:'#10B981',borderRadius:5}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:6}}},scales:{y:{grid:{color:ct.grid}},x:{grid:{display:false}}}}
+});
+new Chart(document.getElementById('hour'),{
+  type:'line',
+  data:{labels:['8','9','10','11','12','13','14','15','16','17','18','19','20'],datasets:[
+    {label:'Productivity',data:[20,52,78,92,95,72,88,76,68,62,48,30,18],borderColor:'#8B5CF6',backgroundColor:'rgba(139,92,246,.18)',fill:true,tension:.4,borderWidth:2.5,pointRadius:0}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},annotation:{}},scales:{y:{grid:{color:ct.grid}},x:{grid:{display:false}}}}
+});
+
+const peeps = MOCK_EMPLOYEES.slice(0,12).map(e=>({...e, verdict: e.productivity>85?'Star':e.productivity>70?'On track':e.productivity>60?'Coach':'At risk'}));
+document.getElementById('prod-rows').innerHTML = peeps.map(p=>`
+  <tr>
+    <td><div class="user-cell"><div class="avatar sm">${p.initials}</div><div><div class="name">${p.name}</div><div class="sub">${p.role} · ${p.branch}</div></div></div></td>
+    <td><b>${p.calls}</b></td>
+    <td>${Math.floor(p.talkTime/60)}h ${p.talkTime%60}m</td>
+    <td>${p.leads}</td>
+    <td><b>${Math.round(p.leads/p.calls*100)}%</b></td>
+    <td><div class="bar" style="width:80px"><span style="width:${p.attendance}%"></span></div></td>
+    <td><b style="color:${p.productivity>85?'var(--green)':p.productivity>70?'var(--brand)':p.productivity>60?'var(--amber)':'var(--red)'}">${p.productivity}</b></td>
+    <td><span class="chip ${p.verdict==='Star'?'green':p.verdict==='On track'?'blue':p.verdict==='Coach'?'amber':'red'}">${p.verdict==='Star'?'🌟 ':p.verdict==='Coach'?'🎯 ':p.verdict==='At risk'?'⚠️ ':''}${p.verdict}</span></td>
+  </tr>
+`).join('');
+</script>
+</body></html>

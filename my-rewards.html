@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Rewards — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('my-rewards');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">My Workspace / Rewards & Badges</div>
+<div class="page-head">
+  <div><h1 class="page-title">🎁 My Rewards & Badges</h1><div class="page-sub">Earned this month · Redeem coins · Track achievements</div></div>
+</div>
+
+<div class="grid-12">
+  <div class="col-12 fadeup" style="background:linear-gradient(135deg,#8B5CF6,#A855F7,#EC4899);color:#fff;border-radius:var(--r-lg);padding:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;position:relative;overflow:hidden">
+    <div style="position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.1)"></div>
+    <div style="position:absolute;left:60%;top:50%;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)"></div>
+    <div>
+      <div style="display:flex;align-items:center;gap:8px"><i class="fa-solid fa-coins" style="font-size:22px"></i><div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;opacity:.85">My Coin Wallet</div></div>
+      <div style="font-size:48px;font-weight:800;margin-top:4px">🪙 2,450</div>
+      <div style="opacity:.85;font-size:13px">+340 earned this week · ≈ ₹2,450 redeem value</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" style="background:rgba(255,255,255,.2);color:#fff;backdrop-filter:blur(8px)"><i class="fa-solid fa-gift"></i> Redeem Gift Card</button>
+      <button class="btn" style="background:#fff;color:var(--purple)"><i class="fa-solid fa-arrow-right"></i> Earn More</button>
+    </div>
+  </div>
+
+  <div class="card col-8 fadeup">
+    <div class="card-head"><div><div class="card-title">🏅 My Achievement Badges</div><div class="card-sub">12 unlocked · 8 in progress</div></div></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px">
+      ${[
+        {i:'🥇',n:'Top Closer',u:true,d:'May 2026'},
+        {i:'🔥',n:'Hot Streak',u:true,d:'7 days'},
+        {i:'🎯',n:'100 Calls',u:true,d:'Apr'},
+        {i:'⚡',n:'Fast Reply',u:true,d:'< 5 min'},
+        {i:'💎',n:'Premium',u:true,d:'Q1 2026'},
+        {i:'🌟',n:'7-Day Star',u:true,d:'May 5'},
+        {i:'🏆',n:'Iron Closer',u:false,p:80,d:'1 deal away'},
+        {i:'🚀',n:'Rocket Mode',u:false,p:60,d:'40% to go'},
+        {i:'🦾',n:'Bot Tamer',u:false,p:35,d:'CRM mastery'},
+        {i:'👑',n:'Royal Closer',u:false,p:20,d:'5 enterprise'},
+        {i:'🎖',n:'Veteran',u:false,p:90,d:'1 yr badge'},
+        {i:'🧠',n:'Brainiac',u:false,p:50,d:'Training'},
+      ].map(b=>`
+        <div style="text-align:center;padding:14px 10px;background:${b.u?'var(--bg-3)':'transparent'};border:${b.u?'none':'2px dashed var(--line)'};border-radius:13px;opacity:${b.u?1:.7}">
+          <div style="font-size:36px;filter:${b.u?'none':'grayscale(.6)'}">${b.i}</div>
+          <div style="font-size:11.5px;font-weight:700;margin-top:6px">${b.n}</div>
+          <div style="font-size:10px;color:var(--ink-3);margin-top:2px">${b.d}</div>
+          ${!b.u?`<div class="bar" style="margin-top:6px;height:4px"><span style="width:${b.p}%"></span></div>`:`<div class="chip green" style="margin-top:6px;font-size:9px;padding:1px 6px">✓ Unlocked</div>`}
+        </div>
+      `).join('')}
+    </div>
+  </div>
+
+  <div class="col-4 vstack">
+    <div class="card fadeup">
+      <div class="card-head"><div class="card-title">🎁 Recent Rewards</div></div>
+      <div class="vstack" style="gap:8px">
+        ${[
+          {n:'Amazon Voucher',a:'₹2,000',d:'May 10',c:'#FF9900',by:'Aarav (HR)'},
+          {n:'Performance Bonus',a:'₹4,000',d:'Apr 30',c:'#10B981',by:'Auto · AI'},
+          {n:'Swiggy Gift Card',a:'₹500',d:'Apr 22',c:'#FC8019',by:'Manager'},
+          {n:'BookMyShow',a:'₹500',d:'Apr 14',c:'#C9252C',by:'Birthday 🎂'},
+        ].map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg-3);border-radius:11px"><div style="width:36px;height:36px;border-radius:9px;background:${r.c}22;color:${r.c};display:grid;place-items:center;font-size:14px"><i class="fa-solid fa-gift"></i></div><div style="flex:1"><div style="font-weight:700;font-size:12.5px">${r.n}</div><div style="font-size:11px;color:var(--ink-3)">${r.d} · ${r.by}</div></div><b style="font-size:13px;color:var(--green)">${r.a}</b></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="ai-card fadeup delay-1">
+      <div class="ai-badge"><i class="fa-solid fa-rocket"></i> Monthly Challenge</div>
+      <div style="margin-top:8px;font-weight:700;font-size:14px">"Iron Closer" — 100 qualified leads</div>
+      <div style="font-size:12px;color:var(--ink-3);margin-top:4px">Your progress: <b>42 / 100</b></div>
+      <div class="bar" style="margin-top:8px"><span style="width:42%"></span></div>
+      <div style="font-size:11.5px;color:var(--ink-3);margin-top:8px">🏆 Prize: ₹5,000 Amazon voucher · Top 10 winners · 12 days left</div>
+    </div>
+
+    <div class="card fadeup delay-2">
+      <div class="card-head"><div class="card-title">⭐ AI Motivation</div></div>
+      <div style="background:var(--brand-soft);border-radius:11px;padding:11px;font-size:13px;line-height:1.5">💪 You're <b>top 1%</b> in your branch this week! Just 1 more closed deal to unlock the legendary <b>"Iron Closer"</b> badge + ₹5,000 voucher.</div>
+    </div>
+  </div>
+</div>
+`;
+</script>
+</body></html>

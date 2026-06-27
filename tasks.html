@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasks & Workflow — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('tasks');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">Attendance & Work / Tasks & Workflow</div>
+<div class="page-head">
+  <div><h1 class="page-title">Tasks & Workflow Engine</h1><div class="page-sub">AI-assisted task assignment · SLA tracking · auto-escalation</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-ghost"><i class="fa-solid fa-table"></i> List</button><button class="btn btn-soft"><i class="fa-solid fa-table-columns"></i> Kanban</button><button class="btn btn-grad"><i class="fa-solid fa-plus"></i> New Task</button></div>
+</div>
+
+<div class="kanban">
+  ${[
+    {n:'Backlog',c:'#94A3B8',items:[
+      {t:'Cold-call 50 fintech leads',p:'High',pc:'red',a:'Priya M.',d:'Today',cm:3},
+      {t:'Update CRM lead scoring rules',p:'Med',pc:'amber',a:'Karan S.',d:'Wed',cm:1},
+      {t:'Q2 sales playbook refresh',p:'Low',pc:'blue',a:'Neha I.',d:'Fri',cm:0},
+    ]},
+    {n:'In Progress',c:'#2563EB',items:[
+      {t:'Demo prep · Acme Corp ₹12L',p:'High',pc:'red',a:'Priya M.',d:'2 PM',cm:5,sla:'On track'},
+      {t:'Onboarding · 4 new SDRs',p:'High',pc:'red',a:'Aarav S.',d:'Today',cm:8,sla:'On track'},
+      {t:'Client visit · BKC',p:'Med',pc:'amber',a:'Vikram R.',d:'4 PM',cm:2,sla:'At risk'},
+    ]},
+    {n:'Review',c:'#8B5CF6',items:[
+      {t:'Proposal · Wipro Enterprise',p:'High',pc:'red',a:'Karan S.',d:'Tomorrow',cm:6},
+      {t:'Recruitment pipeline Q3',p:'Med',pc:'amber',a:'Aarav S.',d:'Thu',cm:2},
+    ]},
+    {n:'Done',c:'#10B981',items:[
+      {t:'Daily standup',p:'Low',pc:'blue',a:'Team',d:'Today',cm:0},
+      {t:'WhatsApp report rollout',p:'Med',pc:'amber',a:'AI Bot',d:'Yest.',cm:1},
+      {t:'Q1 attrition analysis',p:'Med',pc:'amber',a:'Aarav S.',d:'May 8',cm:4},
+      {t:'Mumbai office geo-fence',p:'High',pc:'red',a:'Ops',d:'May 5',cm:2},
+    ]},
+  ].map(col=>`
+    <div class="kcol">
+      <div class="kcol-head"><span><span class="dot-s" style="background:${col.c}"></span> ${col.n} <span class="muted" style="font-weight:500">(${col.items.length})</span></span><button style="color:var(--ink-3)"><i class="fa-solid fa-plus"></i></button></div>
+      ${col.items.map(it=>`
+        <div class="kcard fadeup">
+          <h5>${it.t}</h5>
+          <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip ${it.pc}">${it.p}</span>${it.sla?`<span class="chip ${it.sla==='On track'?'green':'amber'}"><i class="fa-solid fa-stopwatch"></i> ${it.sla}</span>`:''}</div>
+          <div class="meta"><div class="avatar sm" style="width:22px;height:22px;font-size:9px">${initials(it.a)}</div><span>${it.a}</span><span>·</span><span><i class="fa-regular fa-clock"></i> ${it.d}</span>${it.cm?`<span style="margin-left:auto"><i class="fa-regular fa-comment"></i> ${it.cm}</span>`:''}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('')}
+</div>
+
+<div class="grid-12" style="margin-top:18px">
+  <div class="ai-card col-12 fadeup">
+    <div class="ai-badge"><i class="fa-solid fa-sparkles"></i> AI Task Suggestions · Workflow Automation</div>
+    <div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+      ${[
+        {i:'fa-bolt',t:'Auto-assign cold-call tasks based on past conversion rate',a:'Enable'},
+        {i:'fa-clock',t:'Escalate any task overdue >24h to team lead with WhatsApp ping',a:'Configured'},
+        {i:'fa-arrows-rotate',t:'Re-route blocked tasks to backup employee after 4h inactivity',a:'Enable'},
+      ].map(s=>`
+        <div style="padding:12px;background:var(--bg-2);border-radius:12px;border:1px solid var(--line)">
+          <i class="fa-solid ${s.i}" style="color:var(--brand);font-size:16px"></i>
+          <div style="font-size:12.5px;font-weight:600;margin-top:8px;line-height:1.45">${s.t}</div>
+          <button class="btn btn-soft btn-sm" style="margin-top:8px">${s.a}</button>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+</div>
+`;
+</script>
+</body></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payroll — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('payroll');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">People / Payroll</div>
+<div class="page-head">
+  <div><h1 class="page-title">Smart Payroll Intelligence</h1><div class="page-sub">Attendance-linked · auto-incentives · AI bonus calculator</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-ghost"><i class="fa-solid fa-file-pdf"></i> Download Payslips</button><button class="btn btn-grad"><i class="fa-solid fa-paper-plane"></i> Run Payroll · May</button></div>
+</div>
+
+<div class="kpi-grid" style="margin-bottom:18px">
+  ${[{l:'Monthly Payout',v:'₹3.84 Cr',c:'b',i:'fa-money-bill-trend-up',t:'+4.2%'},{l:'Incentives Auto',v:'₹42.6 L',c:'g',i:'fa-bolt',t:'AI calc'},{l:'Overtime',v:'₹8.1 L',c:'a',i:'fa-clock',t:'2,140 hrs'},{l:'Reimbursements',v:'₹3.2 L',c:'c',i:'fa-receipt',t:'18 pending'}].map((k,i)=>`<div class="kpi fadeup delay-${i+1}"><div class="kpi-icon ${k.c}"><i class="fa-solid ${k.i}"></i></div><div class="kpi-label">${k.l}</div><div class="kpi-value">${k.v}</div><div class="kpi-trend up">${k.t}</div></div>`).join('')}
+</div>
+
+<div class="grid-12">
+  <div class="card col-8 fadeup">
+    <div class="card-head"><div><div class="card-title">Payroll Summary · May 2026</div><div class="card-sub">547 employees · Auto-linked with attendance & performance</div></div>
+    <div style="display:flex;gap:6px"><button class="chip blue">All</button><button class="chip">Sales</button><button class="chip">Support</button></div></div>
+    <div style="overflow:auto"><table class="table">
+      <thead><tr><th>Employee</th><th>Base</th><th>Incentive</th><th>OT</th><th>Deductions</th><th>Net</th><th>Status</th></tr></thead>
+      <tbody id="pay-rows"></tbody>
+    </table></div>
+  </div>
+
+  <div class="card col-4 fadeup delay-1">
+    <div class="card-head"><div class="card-title">Cost Distribution</div></div>
+    <div style="height:220px"><canvas id="pie"></canvas></div>
+    <div style="font-size:12px;margin-top:10px"><div style="display:flex;justify-content:space-between"><span><span class="dot-s" style="background:#2563EB"></span> Base salaries</span><b>₹2.94 Cr</b></div><div style="display:flex;justify-content:space-between"><span><span class="dot-s" style="background:#10B981"></span> Incentives</span><b>₹42.6 L</b></div><div style="display:flex;justify-content:space-between"><span><span class="dot-s" style="background:#F59E0B"></span> Overtime</span><b>₹8.1 L</b></div><div style="display:flex;justify-content:space-between"><span><span class="dot-s" style="background:#8B5CF6"></span> Bonus</span><b>₹6.8 L</b></div><div style="display:flex;justify-content:space-between"><span><span class="dot-s" style="background:#06B6D4"></span> Reimburse</span><b>₹3.2 L</b></div></div>
+  </div>
+
+  <div class="card col-7 fadeup">
+    <div class="card-head"><div class="card-title">📄 Sample Payslip · Priya Mehta</div><button class="btn btn-soft btn-sm"><i class="fa-solid fa-download"></i> PDF</button></div>
+    <div style="padding:16px;background:var(--bg-3);border-radius:12px;font-size:13px">
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:10px"><div><b>Crownco Technologies Pvt Ltd</b><div class="muted" style="font-size:11px">Mumbai HQ · Pay period: May 2026</div></div><div style="text-align:right"><b>Priya Mehta</b><div class="muted" style="font-size:11px">EMP-1042 · Senior SDR</div></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div><b style="font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)">Earnings</b>
+          <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;justify-content:space-between"><span>Basic</span><b>₹38,000</b></div>
+            <div style="display:flex;justify-content:space-between"><span>HRA</span><b>₹14,000</b></div>
+            <div style="display:flex;justify-content:space-between"><span>Incentive (AI calc)</span><b style="color:var(--green)">₹12,400</b></div>
+            <div style="display:flex;justify-content:space-between"><span>Overtime (12h)</span><b style="color:var(--green)">₹4,000</b></div>
+            <div style="display:flex;justify-content:space-between"><span>Top performer bonus</span><b style="color:var(--green)">₹4,000</b></div>
+          </div>
+        </div>
+        <div><b style="font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)">Deductions</b>
+          <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;justify-content:space-between"><span>PF</span><b>₹2,400</b></div>
+            <div style="display:flex;justify-content:space-between"><span>ESI</span><b>₹450</b></div>
+            <div style="display:flex;justify-content:space-between"><span>TDS</span><b>₹1,150</b></div>
+            <div style="display:flex;justify-content:space-between"><span>Leave (0 days)</span><b>₹0</b></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:10px;background:var(--brand);color:#fff;border-radius:10px;display:flex;justify-content:space-between"><b>Net Pay</b><b>₹68,400</b></div>
+    </div>
+  </div>
+
+  <div class="card col-5 fadeup delay-1">
+    <div class="card-head"><div class="card-title">Reimbursement Claims</div><span class="chip amber">18 pending</span></div>
+    <div class="vstack" style="gap:8px">
+      ${[
+        {n:'Vikram Rao',a:'₹3,420',c:'Field travel',d:'2 days ago',s:'AI verified',sc:'green'},
+        {n:'Karan Singh',a:'₹1,800',c:'Client lunch',d:'3 days ago',s:'Manager review',sc:'amber'},
+        {n:'Ananya Verma',a:'₹2,100',c:'Internet allowance',d:'May 8',s:'AI verified',sc:'green'},
+        {n:'Priya Mehta',a:'₹4,500',c:'Conference',d:'May 6',s:'Approved',sc:'blue'},
+      ].map(r=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg-3);border-radius:10px">
+          <div class="avatar sm">${initials(r.n)}</div>
+          <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px">${r.n}</div><div style="font-size:11px;color:var(--ink-3)">${r.c} · ${r.d}</div></div>
+          <div style="text-align:right"><b style="font-size:13px">${r.a}</b><div><span class="chip ${r.sc}">${r.s}</span></div></div>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+</div>
+`;
+
+const ct = chartTheme();
+new Chart(document.getElementById('pie'),{
+  type:'doughnut',
+  data:{labels:['Base','Incentive','OT','Bonus','Reimburse'],datasets:[{data:[294,42.6,8.1,6.8,3.2],backgroundColor:['#2563EB','#10B981','#F59E0B','#8B5CF6','#06B6D4'],borderWidth:0}]},
+  options:{cutout:'68%',plugins:{legend:{display:false}}}
+});
+
+document.getElementById('pay-rows').innerHTML = MOCK_EMPLOYEES.slice(0,10).map(e=>{
+  const base = e.salary; const inc = Math.round(base*0.18*(e.productivity/100));
+  const ot = Math.round(base*0.06); const ded = Math.round(base*0.08);
+  const net = base+inc+ot-ded;
+  return `<tr>
+    <td><div class="user-cell"><div class="avatar sm">${e.initials}</div><div><div class="name">${e.name}</div><div class="sub">${e.role}</div></div></div></td>
+    <td>₹${base.toLocaleString()}</td><td style="color:var(--green)"><b>+₹${inc.toLocaleString()}</b></td>
+    <td>+₹${ot.toLocaleString()}</td><td style="color:var(--red)">-₹${ded.toLocaleString()}</td>
+    <td><b>₹${net.toLocaleString()}</b></td>
+    <td><span class="chip ${e.status==='Present'?'green':'amber'}">${e.status==='Present'?'Ready':'Hold'}</span></td>
+  </tr>`;
+}).join('');
+</script>
+</body></html>

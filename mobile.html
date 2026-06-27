@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile App Preview — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('mobile');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">System / Mobile App</div>
+<div class="page-head">
+  <div><h1 class="page-title">📱 Mobile Employee App</h1><div class="page-sub">iOS + Android · attendance, leave, productivity, rewards on the go</div></div>
+  <div style="display:flex;gap:8px"><a class="btn btn-ghost"><i class="fa-brands fa-apple"></i> App Store</a><a class="btn btn-ghost"><i class="fa-brands fa-google-play"></i> Play Store</a></div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px;justify-items:center">
+
+  <!-- Dashboard Phone -->
+  <div class="fadeup">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen" style="padding:30px 16px 16px;background:linear-gradient(180deg,var(--bg-2),var(--bg))">
+        <div style="display:flex;align-items:center;gap:10px"><div class="avatar sm" style="width:36px;height:36px;font-size:13px">PM</div><div><div style="font-size:11px;color:var(--ink-3)">Good morning,</div><div style="font-weight:800;font-size:15px">Priya 🌅</div></div><i class="fa-solid fa-bell" style="margin-left:auto;color:var(--ink-2)"></i></div>
+        <div style="background:linear-gradient(135deg,#10B981,#059669);color:#fff;border-radius:14px;padding:14px;margin-top:14px">
+          <div style="font-size:11px;opacity:.85"><i class="fa-solid fa-circle-check"></i> CHECKED IN</div>
+          <div style="font-size:24px;font-weight:800;margin-top:4px">09:24 AM</div>
+          <div style="font-size:11px;opacity:.85">via WiFi · Mumbai HQ</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+          <div style="background:var(--bg-2);border:1px solid var(--line);border-radius:11px;padding:10px"><i class="fa-solid fa-phone" style="color:var(--brand)"></i><div style="font-size:20px;font-weight:800;margin-top:4px">47</div><div style="font-size:10px;color:var(--ink-3)">Calls today</div></div>
+          <div style="background:var(--bg-2);border:1px solid var(--line);border-radius:11px;padding:10px"><i class="fa-solid fa-bullseye" style="color:var(--green)"></i><div style="font-size:20px;font-weight:800;margin-top:4px">6/8</div><div style="font-size:10px;color:var(--ink-3)">Qualified</div></div>
+        </div>
+        <div style="background:var(--grad);color:#fff;border-radius:11px;padding:11px;margin-top:10px;text-align:center"><div style="font-size:10px;opacity:.85">PERFORMANCE</div><div style="font-size:28px;font-weight:800">96</div><div style="font-size:10px;opacity:.85">🏆 #1 in Mumbai</div></div>
+        <div style="margin-top:10px;font-size:11px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em">Today's tasks</div>
+        ${[{t:'Demo · Acme Corp',ti:'2 PM'},{t:'Follow-up 3 leads',ti:'4 PM'}].map(t=>`<div style="display:flex;gap:8px;align-items:center;padding:8px;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;margin-top:6px"><div style="width:24px;height:24px;border:2px solid var(--brand);border-radius:6px"></div><div style="flex:1"><div style="font-size:12px;font-weight:600">${t.t}</div><div style="font-size:10px;color:var(--ink-3)">${t.ti}</div></div></div>`).join('')}
+        <div style="position:absolute;bottom:0;left:0;right:0;background:var(--bg-2);border-top:1px solid var(--line);padding:10px;display:flex;justify-content:space-around;border-radius:0 0 26px 26px"><i class="fa-solid fa-house" style="color:var(--brand);font-size:18px"></i><i class="fa-solid fa-fingerprint" style="color:var(--ink-3);font-size:18px"></i><i class="fa-solid fa-list-check" style="color:var(--ink-3);font-size:18px"></i><i class="fa-solid fa-trophy" style="color:var(--ink-3);font-size:18px"></i><i class="fa-solid fa-user" style="color:var(--ink-3);font-size:18px"></i></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:14px;font-weight:700">📊 Dashboard</div>
+  </div>
+
+  <!-- Attendance Phone -->
+  <div class="fadeup delay-1">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen" style="padding:30px 16px 16px;background:linear-gradient(180deg,#0F172A,#020617);color:#fff">
+        <div style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-angle-left" style="font-size:18px"></i><div style="font-weight:700;font-size:15px">Check In</div></div>
+        <div class="selfie-frame" style="margin-top:16px;border-radius:18px">
+          <div class="scanline"></div>
+          <i class="fa-solid fa-user-circle" style="font-size:90px;opacity:.6"></i>
+          <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,.5);padding:4px 8px;border-radius:7px;font-size:9.5px"><span class="dot-s" style="background:#10B981;animation:pulse 1s infinite"></span> Liveness</div>
+          <div style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.5);padding:4px 8px;border-radius:7px;font-size:9.5px">📍 19.07°N</div>
+        </div>
+        <div style="margin-top:14px;text-align:center"><div style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#2563EB,#8B5CF6);padding:5px 11px;border-radius:99px;font-size:10px;font-weight:700">✨ GESTURE CHALLENGE</div><div style="margin-top:10px;font-size:14px;font-weight:700">Blink twice & smile 😊</div></div>
+        <div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;justify-content:center"><span style="padding:4px 9px;background:rgba(16,185,129,.2);color:#34d399;border-radius:99px;font-size:10.5px;font-weight:700">✓ Face match</span><span style="padding:4px 9px;background:rgba(16,185,129,.2);color:#34d399;border-radius:99px;font-size:10.5px;font-weight:700">✓ Anti-spoof</span><span style="padding:4px 9px;background:rgba(245,158,11,.2);color:#fbbf24;border-radius:99px;font-size:10.5px;font-weight:700">⏳ Gesture</span></div>
+        <div style="margin-top:14px;background:rgba(255,255,255,.05);border-radius:12px;padding:10px;font-size:11.5px;display:flex;justify-content:space-between"><span style="opacity:.7">AI Confidence</span><b style="color:#22d3ee">96.4%</b></div>
+        <button style="margin-top:14px;width:100%;background:linear-gradient(135deg,#2563EB,#8B5CF6);color:#fff;padding:13px;border-radius:12px;font-weight:700;font-size:14px;border:none">Confirm Check-In</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:14px;font-weight:700">🤳 Selfie + Gesture</div>
+  </div>
+
+  <!-- Leave Phone -->
+  <div class="fadeup delay-2">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen" style="padding:30px 16px 16px">
+        <div style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-angle-left" style="color:var(--ink-2)"></i><div style="font-weight:700;font-size:15px">Apply Leave</div></div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+          <div style="background:var(--brand-soft);border:1px solid var(--brand);color:var(--brand);padding:11px;border-radius:11px;text-align:center;font-size:11px;font-weight:700">🌴 Casual<div style="font-size:18px;margin-top:2px">12</div></div>
+          <div style="background:var(--bg-3);padding:11px;border-radius:11px;text-align:center;font-size:11px;font-weight:700;color:var(--ink-3)">🤒 Sick<div style="font-size:18px;margin-top:2px">8</div></div>
+          <div style="background:var(--bg-3);padding:11px;border-radius:11px;text-align:center;font-size:11px;font-weight:700;color:var(--ink-3)">💰 Earned<div style="font-size:18px;margin-top:2px">5</div></div>
+        </div>
+        <div style="margin-top:14px"><div style="font-size:11px;font-weight:700;color:var(--ink-3);margin-bottom:6px">DATES</div><div style="display:flex;gap:6px"><div style="flex:1;padding:9px;border:1px solid var(--line);border-radius:9px;font-size:12px;font-weight:600">May 14</div><div style="flex:1;padding:9px;border:1px solid var(--line);border-radius:9px;font-size:12px;font-weight:600">May 18</div></div></div>
+        <div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:var(--ink-3);margin-bottom:6px">REASON</div><div style="padding:10px;border:1px solid var(--line);border-radius:9px;font-size:12px;min-height:50px">Family function</div></div>
+        <div class="ai-card" style="margin-top:14px;padding:11px"><div class="ai-badge" style="font-size:9px">✨ AI IMPACT</div><div style="font-size:12px;margin-top:5px;line-height:1.4">Risk <b style="color:var(--amber)">62%</b> · 4 active deals · Backup: Karan S. (94%)</div></div>
+        <button style="margin-top:14px;width:100%;background:var(--grad);color:#fff;padding:12px;border-radius:11px;font-weight:700;font-size:13px;border:none">Submit Request</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:14px;font-weight:700">🏖 Leave Apply</div>
+  </div>
+
+  <!-- WhatsApp Phone -->
+  <div class="fadeup delay-3">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen" style="padding:30px 0 0;background:#e5ddd5">
+        <div style="background:#075E54;color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px"><i class="fa-solid fa-angle-left"></i><div style="width:32px;height:32px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:800">C</div><div><div style="font-weight:700;font-size:14px">Crownco AI</div><div style="font-size:10px;opacity:.8">Daily reports</div></div></div>
+        <div style="padding:14px 12px;display:flex;flex-direction:column;gap:10px">
+          <div style="background:#fff;padding:10px 12px;border-radius:8px 8px 8px 2px;font-size:12px;max-width:85%;box-shadow:0 1px 1px rgba(0,0,0,.1)">🌅 Good morning Priya! Your shift starts in 30 min. Mumbai HQ.</div>
+          <div style="background:#dcf8c6;padding:10px 12px;border-radius:8px 8px 2px 8px;font-size:11.5px;align-self:flex-end;max-width:90%;box-shadow:0 1px 1px rgba(0,0,0,.1);font-family:ui-monospace,monospace;white-space:pre-wrap;line-height:1.5">🌟 *Daily Report*
+
+📞 Calls: *47*
+⏱ Talk: *2h 32m*
+✅ Qualified: *6*
+🎯 Conv: *38%* ▲
+💰 Revenue: *₹2.4L*
+🏆 Rank: *#1*
+
+💡 Best window: 11–2 PM
+<span style="font-size:9px;opacity:.6">9:02 PM ✓✓</span></div>
+          <div style="background:#fff;padding:10px 12px;border-radius:8px 8px 8px 2px;font-size:12px;max-width:85%;box-shadow:0 1px 1px rgba(0,0,0,.1)">🎁 You earned ₹2,000 Amazon voucher! Tap to redeem.</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:14px;font-weight:700">💬 WhatsApp Report</div>
+  </div>
+
+</div>
+
+<div class="card fadeup" style="margin-top:30px;text-align:center;background:var(--grad);color:#fff;border:none">
+  <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.85">Native Mobile</div>
+  <div style="font-size:22px;font-weight:800;margin-top:6px">React Native · Offline-first · Biometric · Push · Background tracking</div>
+  <div style="opacity:.85;margin-top:6px;font-size:13px">Field employees can mark attendance offline — auto-sync when network returns</div>
+</div>
+`;
+</script>
+</body></html>

@@ -7,6 +7,16 @@ const STORAGE_KEY = "crownco_hr_dataset_v2";
 let cached: SeedDataset | null = null;
 let memoryOnly = false;
 
+/** Same shape as a fresh build, but stable for SSR + first client paint (no localStorage). */
+let hydrationDataset: SeedDataset | null = null;
+
+export function getHydrationDataset(): SeedDataset {
+  if (!hydrationDataset) {
+    hydrationDataset = buildSeedDataset();
+  }
+  return hydrationDataset;
+}
+
 function isBrowser() {
   return typeof window !== "undefined";
 }

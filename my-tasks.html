@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Tasks — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('my-tasks');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">My Workspace / My Tasks</div>
+<div class="page-head">
+  <div><h1 class="page-title">My Tasks</h1><div class="page-sub">Tasks assigned to me · update progress & mark done</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-ghost"><i class="fa-solid fa-table"></i> List</button><button class="btn btn-soft"><i class="fa-solid fa-table-columns"></i> Board</button></div>
+</div>
+
+<div class="kpi-grid" style="margin-bottom:18px">
+  ${[{l:'Open',v:'8',c:'b',i:'fa-list'},{l:'In Progress',v:'3',c:'p',i:'fa-spinner'},{l:'Due Today',v:'4',c:'a',i:'fa-clock'},{l:'Done This Week',v:'12',c:'g',i:'fa-circle-check'}].map((k,i)=>`<div class="kpi fadeup delay-${i+1}"><div class="kpi-icon ${k.c}"><i class="fa-solid ${k.i}"></i></div><div class="kpi-label">${k.l}</div><div class="kpi-value">${k.v}</div></div>`).join('')}
+</div>
+
+<div class="kanban">
+  ${[
+    {n:'Open',c:'#94A3B8',items:[
+      {t:'Cold-call 30 fintech leads',p:'High',pc:'red',d:'Today',cm:0},
+      {t:'Update CRM for Q2 prospects',p:'Med',pc:'amber',d:'Wed',cm:1},
+      {t:'Send proposal to Wipro',p:'High',pc:'red',d:'Tomorrow',cm:2},
+    ]},
+    {n:'In Progress',c:'#8B5CF6',items:[
+      {t:'Demo prep · Acme Corp ₹12L',p:'High',pc:'red',d:'2 PM',cm:5,sla:'On track'},
+      {t:'Follow-up 3 hot leads',p:'High',pc:'red',d:'4 PM',cm:3,sla:'On track'},
+      {t:'Onboard new SDR — shadow',p:'Med',pc:'amber',d:'EOW',cm:2,sla:'At risk'},
+    ]},
+    {n:'Review',c:'#F59E0B',items:[
+      {t:'Q1 territory map update',p:'Med',pc:'amber',d:'Manager',cm:4},
+    ]},
+    {n:'Done',c:'#10B981',items:[
+      {t:'Daily standup',p:'Low',pc:'blue',d:'Today',cm:0},
+      {t:'Yesterday\u2019s WhatsApp report',p:'Low',pc:'blue',d:'Yest.',cm:0},
+      {t:'Close Tata Steel lead ₹3.2L',p:'High',pc:'red',d:'Yest.',cm:6},
+    ]},
+  ].map(col=>`
+    <div class="kcol">
+      <div class="kcol-head"><span><span class="dot-s" style="background:${col.c}"></span> ${col.n} <span class="muted">(${col.items.length})</span></span><button style="color:var(--ink-3)"><i class="fa-solid fa-plus"></i></button></div>
+      ${col.items.map(it=>`
+        <div class="kcard fadeup">
+          <h5>${it.t}</h5>
+          <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip ${it.pc}">${it.p}</span>${it.sla?`<span class="chip ${it.sla==='On track'?'green':'amber'}"><i class="fa-solid fa-stopwatch"></i> ${it.sla}</span>`:''}</div>
+          <div class="meta"><span><i class="fa-regular fa-clock"></i> ${it.d}</span>${it.cm?`<span style="margin-left:auto"><i class="fa-regular fa-comment"></i> ${it.cm}</span>`:''}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('')}
+</div>
+
+<div class="ai-card fadeup" style="margin-top:18px">
+  <div class="ai-badge"><i class="fa-solid fa-sparkles"></i> AI Suggestions for You</div>
+  <div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+    ${[
+      {i:'fa-bolt',t:'Schedule cold-call sprint at 11 AM — your peak window'},
+      {i:'fa-clock',t:'Acme demo is 2 PM — prep deck now to avoid rush'},
+      {i:'fa-trophy',t:'1 more closed lead = "Iron Closer" badge!'},
+    ].map(s=>`<div style="padding:12px;background:var(--bg-2);border-radius:12px;border:1px solid var(--line)"><i class="fa-solid ${s.i}" style="color:var(--purple);font-size:16px"></i><div style="font-size:12.5px;font-weight:600;margin-top:8px;line-height:1.45">${s.t}</div></div>`).join('')}
+  </div>
+</div>
+`;
+</script>
+</body></html>

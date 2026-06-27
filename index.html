@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crownco HR — Sign In</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<style>
+.role-card{padding:18px;border:2px solid var(--line);border-radius:16px;cursor:pointer;transition:all .2s;background:var(--bg-2);position:relative;overflow:hidden}
+.role-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--brand)}
+.role-card.selected{border-color:var(--brand);background:linear-gradient(135deg,var(--brand-soft),rgba(139,92,246,.08));box-shadow:0 0 0 4px var(--brand-soft)}
+.role-card.selected::after{content:"✓";position:absolute;top:10px;right:12px;width:24px;height:24px;background:var(--brand);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px}
+.role-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px;margin-bottom:10px}
+.step{display:none}.step.active{display:block;animation:fadeUp .4s}
+.stepper{display:flex;gap:8px;margin-bottom:20px}
+.stepper .dot{flex:1;height:4px;border-radius:99px;background:var(--line)}
+.stepper .dot.active{background:var(--brand)}
+.stepper .dot.done{background:var(--green)}
+</style>
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-art">
+    <div style="position:relative;z-index:2">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="brand-logo" style="width:44px;height:44px;font-size:18px">C</div>
+        <div>
+          <div style="font-size:18px;font-weight:800">Crownco HR</div>
+          <div style="font-size:11px;opacity:.75;letter-spacing:.1em;text-transform:uppercase">AI Workforce OS</div>
+        </div>
+      </div>
+    </div>
+    <div style="position:relative;z-index:2">
+      <div class="ai-badge" style="background:rgba(255,255,255,.15);backdrop-filter:blur(8px)"><i class="fa-solid fa-sparkles"></i> Powered by Crownco AI</div>
+      <h1 style="font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1.1;margin:18px 0 12px">One platform.<br>Two experiences.</h1>
+      <p style="font-size:15px;opacity:.85;line-height:1.6;max-width:480px">Sign in as <b>HR Admin</b> to manage your entire workforce, or as an <b>Employee</b> to track your attendance, performance & rewards.</p>
+      <div style="display:flex;gap:24px;margin-top:32px;flex-wrap:wrap">
+        <div><div style="font-size:24px;font-weight:800">547</div><div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.1em">Employees</div></div>
+        <div><div style="font-size:24px;font-weight:800">12</div><div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.1em">Branches</div></div>
+        <div><div style="font-size:24px;font-weight:800">99.2%</div><div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.1em">Uptime</div></div>
+        <div><div style="font-size:24px;font-weight:800">4.9★</div><div style="font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.1em">Rating</div></div>
+      </div>
+    </div>
+    <div style="position:relative;z-index:2;font-size:12px;opacity:.65">© 2026 Crownco · Self-hosted AI · Whisper · vLLM · GPU Inference</div>
+  </div>
+
+  <div class="auth-form">
+    <div class="auth-form-inner fadeup">
+      <div class="stepper"><div class="dot active" id="d1"></div><div class="dot" id="d2"></div></div>
+
+      <!-- STEP 1: ROLE SELECTION -->
+      <div class="step active" id="step1">
+        <div style="margin-bottom:20px">
+          <h2 style="font-size:24px;font-weight:800;letter-spacing:-.02em;margin:0">Welcome to Crownco 👋</h2>
+          <p class="muted" style="margin-top:6px;font-size:13.5px">How are you signing in today?</p>
+        </div>
+
+        <div class="vstack" style="gap:12px">
+          <div class="role-card" data-role="hr" onclick="pickRole('hr')">
+            <div style="display:flex;align-items:flex-start;gap:14px">
+              <div class="role-icon" style="background:var(--brand-soft);color:var(--brand)"><i class="fa-solid fa-user-tie"></i></div>
+              <div style="flex:1">
+                <div style="font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px">HR Admin / Manager <span class="chip blue" style="font-size:10px">Full Access</span></div>
+                <div style="font-size:12.5px;color:var(--ink-3);margin-top:4px;line-height:1.5">Manage 547 employees, approve leaves, track productivity, send rewards, configure attendance rules & view AI insights.</div>
+                <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+                  <span class="chip">Dashboard</span><span class="chip">People</span><span class="chip">Payroll</span><span class="chip">Recruit</span><span class="chip">Settings</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-card" data-role="employee" onclick="pickRole('employee')">
+            <div style="display:flex;align-items:flex-start;gap:14px">
+              <div class="role-icon" style="background:#ede9fe;color:#5b21b6"><i class="fa-solid fa-user"></i></div>
+              <div style="flex:1">
+                <div style="font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px">Employee <span class="chip purple" style="font-size:10px">Personal Workspace</span></div>
+                <div style="font-size:12.5px;color:var(--ink-3);margin-top:4px;line-height:1.5">Mark attendance via WiFi/Selfie, view your goals, apply leave, see rewards, check payslip & track your performance.</div>
+                <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+                  <span class="chip">My Day</span><span class="chip">Check-in</span><span class="chip">My Leave</span><span class="chip">Rewards</span><span class="chip">Payslip</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-card" data-role="field" onclick="pickRole('field')">
+            <div style="display:flex;align-items:flex-start;gap:14px">
+              <div class="role-icon" style="background:#cffafe;color:#155e75"><i class="fa-solid fa-map-location-dot"></i></div>
+              <div style="flex:1">
+                <div style="font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px">Field Employee <span class="chip cyan" style="font-size:10px">On-the-go</span></div>
+                <div style="font-size:12.5px;color:var(--ink-3);margin-top:4px;line-height:1.5">Selfie + gesture attendance, live route tracking, client visit logs, customer signatures, expense uploads.</div>
+                <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+                  <span class="chip">Selfie Check-in</span><span class="chip">Visits</span><span class="chip">Route Map</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-grad" id="continueBtn" disabled style="width:100%;justify-content:center;padding:13px;margin-top:18px;opacity:.5;cursor:not-allowed" onclick="goStep2()"><i class="fa-solid fa-arrow-right"></i> Continue</button>
+      </div>
+
+      <!-- STEP 2: CREDENTIALS -->
+      <div class="step" id="step2">
+        <button onclick="back()" style="color:var(--ink-3);font-size:12px;font-weight:600;margin-bottom:14px"><i class="fa-solid fa-angle-left"></i> Back to role selection</button>
+
+        <div style="display:flex;align-items:center;gap:14px;padding:12px;background:var(--brand-soft);border-radius:12px;margin-bottom:18px">
+          <div class="role-icon" id="rIcon" style="margin:0;width:38px;height:38px;font-size:15px"><i class="fa-solid fa-user-tie"></i></div>
+          <div style="flex:1"><div style="font-size:12px;color:var(--ink-3);font-weight:600">Signing in as</div><div style="font-weight:800;font-size:14px" id="rName">HR Admin</div></div>
+          <span class="chip blue" id="rChip">Full Access</span>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <button class="btn btn-ghost" style="flex:1;justify-content:center"><i class="fa-brands fa-google"></i> Google</button>
+          <button class="btn btn-ghost" style="flex:1;justify-content:center"><i class="fa-brands fa-microsoft"></i> Microsoft</button>
+          <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="document.getElementById('face-modal').classList.add('open')"><i class="fa-solid fa-face-viewfinder"></i></button>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin:12px 0"><div style="flex:1;height:1px;background:var(--line)"></div><span class="tiny muted">or with email</span><div style="flex:1;height:1px;background:var(--line)"></div></div>
+
+        <div class="field"><label>Work Email</label><input id="email" type="email"></div>
+        <div class="field"><label>Password</label><input type="password" value="••••••••••"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><label style="font-size:12px;color:var(--ink-2);display:flex;align-items:center;gap:6px"><input type="checkbox" checked> Remember · Bind device</label><a href="#" style="color:var(--brand);font-size:12px;font-weight:600">Forgot?</a></div>
+
+        <button class="btn btn-grad" style="width:100%;justify-content:center;padding:12px" onclick="signIn()"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign in to Crownco</button>
+
+        <div style="margin-top:14px;text-align:center"><a href="#" onclick="document.getElementById('otp-modal').classList.add('open')" style="font-size:12px;color:var(--ink-3);font-weight:600">Use phone OTP instead →</a></div>
+
+        <div style="margin-top:24px;padding:12px;background:var(--bg-3);border-radius:11px;display:flex;gap:10px;align-items:center">
+          <div style="width:32px;height:32px;border-radius:8px;background:var(--brand-soft);display:grid;place-items:center;color:var(--brand)"><i class="fa-solid fa-shield-halved"></i></div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700">Enterprise-grade security</div>
+            <div style="font-size:11px;color:var(--ink-3)">SSO · MFA · Device binding · Audit logs · GDPR</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="face-modal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head"><div><div style="font-weight:700">Face Verification Login</div><div class="tiny muted">Liveness + gesture check</div></div><button onclick="this.closest('.modal-bg').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="modal-body">
+      <div class="selfie-frame">
+        <div class="scanline"></div>
+        <i class="fa-solid fa-face-smile" style="font-size:72px;opacity:.6"></i>
+        <div style="position:absolute;bottom:14px;left:14px;right:14px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);padding:8px 12px;border-radius:10px;font-size:12px;display:flex;justify-content:space-between"><span>AI Confidence</span><b id="conf">92.4%</b></div>
+      </div>
+      <div style="margin-top:14px;text-align:center"><div class="ai-badge"><i class="fa-solid fa-hand"></i> Gesture Challenge</div><div style="margin-top:8px;font-size:14px;font-weight:600">Please blink twice & smile 😊</div></div>
+      <div style="margin-top:12px;display:flex;gap:8px"><div class="chip green"><i class="fa-solid fa-check"></i> Liveness OK</div><div class="chip green"><i class="fa-solid fa-check"></i> Face match</div><div class="chip amber"><i class="fa-solid fa-circle-notch fa-spin"></i> Gesture</div></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost" onclick="this.closest('.modal-bg').classList.remove('open')">Cancel</button><button class="btn btn-grad" onclick="signIn()"><i class="fa-solid fa-check"></i> Verify & Enter</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="otp-modal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-head"><div><div style="font-weight:700">Phone OTP Verification</div><div class="tiny muted">Sent to +91 98xxx xxx42</div></div><button onclick="this.closest('.modal-bg').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="modal-body">
+      <div style="display:flex;gap:8px;justify-content:center;margin:18px 0">
+        <input style="width:48px;height:54px;text-align:center;font-size:22px;font-weight:700;border-radius:10px;border:1px solid var(--line);background:var(--bg)" value="6"/>
+        <input style="width:48px;height:54px;text-align:center;font-size:22px;font-weight:700;border-radius:10px;border:1px solid var(--line);background:var(--bg)" value="2"/>
+        <input style="width:48px;height:54px;text-align:center;font-size:22px;font-weight:700;border-radius:10px;border:1px solid var(--line);background:var(--bg)" value="9"/>
+        <input style="width:48px;height:54px;text-align:center;font-size:22px;font-weight:700;border-radius:10px;border:1px solid var(--line);background:var(--bg)" value="3"/>
+      </div>
+      <div class="tiny muted" style="text-align:center">Resend OTP in 24s</div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-grad" style="width:100%;justify-content:center" onclick="signIn()">Verify & Continue</button></div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+let selectedRole = null;
+const roleData = {
+  hr:       {name:'HR Admin',           chip:'Full Access',        icon:'fa-user-tie',          bg:'var(--brand-soft)',    color:'var(--brand)',   email:'aarav@crownco.ai',  user:'Aarav Sharma',  initials:'AS', dest:'dashboard.html'},
+  employee: {name:'Employee',           chip:'Personal Workspace', icon:'fa-user',              bg:'#ede9fe',              color:'#5b21b6',         email:'priya@crownco.ai',  user:'Priya Mehta',   initials:'PM', dest:'my-day.html'},
+  field:    {name:'Field Employee',     chip:'On-the-go',          icon:'fa-map-location-dot',  bg:'#cffafe',              color:'#155e75',         email:'vikram@crownco.ai', user:'Vikram Rao',    initials:'VR', dest:'my-day.html'}
+};
+
+function pickRole(r){
+  selectedRole = r;
+  document.querySelectorAll('.role-card').forEach(c=>c.classList.toggle('selected', c.dataset.role===r));
+  const btn = document.getElementById('continueBtn');
+  btn.disabled = false; btn.style.opacity='1'; btn.style.cursor='pointer';
+}
+function goStep2(){
+  if(!selectedRole) return;
+  const d = roleData[selectedRole];
+  document.getElementById('rName').textContent = d.name;
+  document.getElementById('rChip').textContent = d.chip;
+  document.getElementById('rChip').className = 'chip ' + (selectedRole==='hr'?'blue':selectedRole==='employee'?'purple':'cyan');
+  document.getElementById('rIcon').innerHTML = '<i class="fa-solid '+d.icon+'"></i>';
+  document.getElementById('rIcon').style.background = d.bg;
+  document.getElementById('rIcon').style.color = d.color;
+  document.getElementById('email').value = d.email;
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+  document.getElementById('d1').classList.remove('active'); document.getElementById('d1').classList.add('done');
+  document.getElementById('d2').classList.add('active');
+}
+function back(){
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step1').classList.add('active');
+  document.getElementById('d2').classList.remove('active');
+  document.getElementById('d1').classList.remove('done'); document.getElementById('d1').classList.add('active');
+}
+function signIn(){
+  if(!selectedRole) selectedRole = 'hr';
+  const d = roleData[selectedRole];
+  const s = JSON.parse(localStorage.getItem('crownco_state_v1')||'{}');
+  s.role = selectedRole;
+  s.roleName = d.name;
+  s.user = { name:d.user, role:d.name, email:d.email, avatar:d.initials };
+  localStorage.setItem('crownco_state_v1', JSON.stringify(s));
+  window.location.href = d.dest;
+}
+let c=92.4; setInterval(()=>{ c = Math.min(99.6, c+Math.random()*0.6); const el=document.getElementById('conf'); if(el) el.textContent=c.toFixed(1)+'%'; },200);
+</script>
+</body>
+</html>

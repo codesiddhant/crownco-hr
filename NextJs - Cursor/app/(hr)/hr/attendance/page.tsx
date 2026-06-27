@@ -45,6 +45,7 @@ export default function HRAttendancePage() {
   const [radius, setRadius] = React.useState(branch.radiusMeters);
   const [selfieOpen, setSelfieOpen] = React.useState(false);
   const [voiceState, setVoiceState] = React.useState<"idle" | "listening" | "done">("idle");
+  const [attTab, setAttTab] = React.useState("overview");
 
   React.useEffect(() => {
     setRadius(branch.radiusMeters);
@@ -114,7 +115,7 @@ export default function HRAttendancePage() {
         <KpiCard label="Absent" value={absent} format="number" icon={AlertTriangle} accent="destructive" />
       </div>
 
-      <Tabs defaultValue="overview">
+      <Tabs value={attTab} onValueChange={setAttTab}>
         <TabsList className="w-full overflow-x-auto md:w-auto">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="geo">Geofence</TabsTrigger>
@@ -139,7 +140,11 @@ export default function HRAttendancePage() {
                 </Badge>
               }
             >
-              <GeofenceMap branch={branch} radius={radius} height={320} />
+              {attTab === "overview" ? (
+                <GeofenceMap branch={branch} radius={radius} height={320} />
+              ) : (
+                <div className="h-[320px] rounded-2xl border bg-muted/10" aria-hidden />
+              )}
             </SectionCard>
 
             <SectionCard
@@ -244,12 +249,16 @@ export default function HRAttendancePage() {
               description={`${branch.name} · radius ${radius}m`}
               icon={<MapPin className="h-4 w-4" />}
             >
-              <GeofenceMap
-                branch={branch}
-                radius={radius}
-                height={400}
-                livePin={{ lat: branch.lat + 0.0006, lng: branch.lng - 0.0004, label: "Demo employee", inside: true }}
-              />
+              {attTab === "geo" ? (
+                <GeofenceMap
+                  branch={branch}
+                  radius={radius}
+                  height={400}
+                  livePin={{ lat: branch.lat + 0.0006, lng: branch.lng - 0.0004, label: "Demo employee", inside: true }}
+                />
+              ) : (
+                <div className="h-[400px] rounded-2xl border bg-muted/10" aria-hidden />
+              )}
             </SectionCard>
 
             <SectionCard

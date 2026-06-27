@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Attendance — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('attendance');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">Attendance & Work / Smart Attendance</div>
+<div class="page-head">
+  <div><h1 class="page-title">Smart Attendance</h1><div class="page-sub">Geo-fence · WiFi-fence · Live selfie · Gesture · Voice — fraud-proof verification</div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-ghost"><i class="fa-solid fa-file-export"></i> Export</button>
+    <button class="btn btn-ghost" onclick="openCorr()"><i class="fa-solid fa-pen"></i> Correction Request</button>
+    <button class="btn btn-grad" onclick="openCheckin()"><i class="fa-solid fa-fingerprint"></i> Check In</button>
+  </div>
+</div>
+
+<div style="display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:18px">
+  ${['Overview','Geo-Fence','WiFi-Fence','Live Selfie + Gesture','Voice','Multi-Office','History'].map((t,i)=>`<button class="btn ${i===0?'btn-soft':'btn-ghost'}" style="border-radius:8px 8px 0 0;border-bottom:${i===0?'2px solid var(--brand)':'2px solid transparent'};background:${i===0?'transparent':'transparent'};border:none;border-bottom:${i===0?'2px solid var(--brand)':'2px solid transparent'};color:${i===0?'var(--brand)':'var(--ink-3)'};font-weight:600">${t}</button>`).join('')}
+</div>
+
+<div class="kpi-grid" style="margin-bottom:18px">
+  ${[
+    {l:'Total Check-ins',v:'491', c:'b', i:'fa-fingerprint',t:'Today'},
+    {l:'Geo-Fence',v:'342', c:'g', i:'fa-location-dot',t:'69.6%'},
+    {l:'WiFi-Fence',v:'118', c:'p', i:'fa-wifi',t:'24.0%'},
+    {l:'Selfie+Gesture',v:'31', c:'c', i:'fa-face-smile',t:'6.3%'},
+    {l:'Late Arrivals',v:'23', c:'a', i:'fa-clock',t:'Auto-flagged'},
+    {l:'Fraud Detected',v:'3', c:'r', i:'fa-shield',t:'GPS spoof'},
+  ].map((k,i)=>`
+    <div class="kpi fadeup delay-${i+1}">
+      <div class="kpi-icon ${k.c}"><i class="fa-solid ${k.i}"></i></div>
+      <div class="kpi-label">${k.l}</div><div class="kpi-value">${k.v}</div>
+      <div class="kpi-trend up">${k.t}</div>
+    </div>`).join('')}
+</div>
+
+<div class="grid-12">
+  <div class="card col-7 fadeup">
+    <div class="card-head">
+      <div><div class="card-title">🌐 Geo-Fence Live Map · Mumbai HQ</div><div class="card-sub">200m radius · 67 employees currently inside</div></div>
+      <div style="display:flex;gap:6px"><button class="chip blue">Mumbai</button><button class="chip">Delhi</button><button class="chip">Bangalore</button></div>
+    </div>
+    <div class="map" style="height:340px">
+      <div class="map-grid"></div>
+      <div class="geo-circle" style="left:50%;top:50%;width:300px;height:300px;margin-left:-150px;margin-top:-150px"></div>
+      <div class="geo-circle" style="left:50%;top:50%;width:160px;height:160px;margin-left:-80px;margin-top:-80px;animation-delay:.5s"></div>
+      <div class="pin" style="left:50%;top:50%;margin-left:-14px;margin-top:-28px"></div>
+      <div class="pin green" style="left:42%;top:42%"></div>
+      <div class="pin green" style="left:58%;top:38%"></div>
+      <div class="pin green" style="left:54%;top:60%"></div>
+      <div class="pin green" style="left:46%;top:62%"></div>
+      <div class="pin amber" style="left:30%;top:30%"></div>
+      <div class="pin red" style="left:18%;top:75%" title="Outside fence"></div>
+      <div style="position:absolute;left:14px;top:14px;background:rgba(255,255,255,.95);padding:10px 12px;border-radius:11px;font-size:11.5px;box-shadow:var(--shadow)">
+        <div style="font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-location-crosshairs" style="color:var(--brand)"></i> Mumbai HQ</div>
+        <div style="color:var(--ink-3);font-size:11px">19.0760° N, 72.8777° E</div>
+        <div style="color:var(--ink-3);font-size:11px">Radius 200m · Accuracy ±5m</div>
+      </div>
+      <div style="position:absolute;right:14px;top:14px;background:rgba(255,255,255,.95);padding:10px 12px;border-radius:11px;font-size:11.5px;box-shadow:var(--shadow)">
+        <div style="font-weight:700;margin-bottom:6px">Live Inside</div>
+        <div style="display:flex;flex-direction:column;gap:4px;font-size:11px">
+          <span><span class="dot-s" style="background:#10B981"></span> 67 inside</span>
+          <span><span class="dot-s" style="background:#F59E0B"></span> 4 at boundary</span>
+          <span><span class="dot-s" style="background:#EF4444"></span> 1 outside (flagged)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card col-5 fadeup delay-1">
+    <div class="card-head"><div><div class="card-title">📶 WiFi-Fence Whitelist</div><div class="card-sub">SSID + BSSID verification · Anti-spoof</div></div><button class="btn btn-soft btn-sm"><i class="fa-solid fa-plus"></i> Add</button></div>
+    <div class="vstack" style="gap:8px">
+      ${[
+        {s:'Crownco-HQ-5G',b:'A8:1C:58:7B:21:9F',c:'Mumbai · Floor 4',st:'Active',l:67},
+        {s:'Crownco-DL-Office',b:'B4:2C:67:8A:34:12',c:'Delhi · Floor 2',st:'Active',l:38},
+        {s:'Crownco-BLR-WiFi',b:'C8:3E:79:9B:45:23',c:'Bangalore',st:'Active',l:54},
+        {s:'Crownco-Guest',b:'D2:4F:8A:AC:56:34',c:'All branches',st:'Blocked',l:0},
+      ].map(w=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:11px;background:var(--bg-3);border-radius:11px">
+          <div style="width:36px;height:36px;border-radius:9px;background:${w.st==='Active'?'var(--brand-soft)':'#fee2e2'};display:grid;place-items:center;color:${w.st==='Active'?'var(--brand)':'var(--red)'}"><i class="fa-solid fa-wifi"></i></div>
+          <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:13px">${w.s}</div><div style="font-size:11px;color:var(--ink-3);font-family:ui-monospace,monospace">${w.b} · ${w.c}</div></div>
+          <div style="text-align:right"><span class="chip ${w.st==='Active'?'green':'red'}">${w.st}</span><div style="font-size:11px;color:var(--ink-3);margin-top:4px">${w.l} connected</div></div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="margin-top:12px;padding:10px;background:var(--brand-soft);border-radius:10px;font-size:12px"><b><i class="fa-solid fa-shield-halved" style="color:var(--brand)"></i> Active Defenses:</b> VPN/proxy detection · Fake hotspot prevention · Device fingerprint · Root/jailbreak block · Min connection 5min</div>
+  </div>
+
+  <div class="card col-12 fadeup">
+    <div class="card-head"><div><div class="card-title">Today's Attendance Timeline</div><div class="card-sub">Real-time check-ins with method verification</div></div>
+    <div style="display:flex;gap:6px"><input class="search" style="padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:12.5px;width:200px" placeholder="Search employee…"><button class="btn btn-ghost btn-sm"><i class="fa-solid fa-filter"></i></button></div></div>
+    <div style="overflow:auto"><table class="table">
+      <thead><tr><th>Employee</th><th>Branch</th><th>Check-In</th><th>Method</th><th>AI Confidence</th><th>Location</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="att-rows"></tbody>
+    </table></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--ink-3)"><span>Showing 1–10 of 491</span><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm">‹</button><button class="btn btn-soft btn-sm">1</button><button class="btn btn-ghost btn-sm">2</button><button class="btn btn-ghost btn-sm">3</button><button class="btn btn-ghost btn-sm">›</button></div></div>
+  </div>
+</div>
+`;
+
+const rows = [
+  {n:'Priya Mehta',b:'Mumbai',t:'09:24 AM',m:'WiFi',c:99.2,loc:'Crownco-HQ-5G',s:'On-time',sc:'green'},
+  {n:'Karan Singh',b:'Mumbai',t:'09:18 AM',m:'Geo',c:97.8,loc:'19.076N, 72.877E',s:'On-time',sc:'green'},
+  {n:'Neha Iyer',b:'Delhi',t:'09:32 AM',m:'WiFi',c:98.5,loc:'Crownco-DL',s:'On-time',sc:'green'},
+  {n:'Rohan Kapoor',b:'Mumbai',t:'09:53 AM',m:'Selfie',c:94.1,loc:'Remote · WFH',s:'Late 23m',sc:'amber'},
+  {n:'Ananya Verma',b:'Bangalore',t:'09:15 AM',m:'Geo',c:99.6,loc:'12.971N, 77.594E',s:'On-time',sc:'green'},
+  {n:'Vikram Rao',b:'Field',t:'10:02 AM',m:'Selfie+Gesture',c:96.7,loc:'Client site · Andheri',s:'Field visit',sc:'blue'},
+  {n:'Sneha Patel',b:'Pune',t:'10:14 AM',m:'Voice',c:91.4,loc:'Voice ID match',s:'Late 44m',sc:'amber'},
+  {n:'Aditya Joshi',b:'Mumbai',t:'09:21 AM',m:'WiFi',c:99.0,loc:'Crownco-HQ-5G',s:'On-time',sc:'green'},
+  {n:'Riya Bose',b:'Hyderabad',t:'-',m:'-',c:0,loc:'-',s:'Absent',sc:'red'},
+  {n:'Yash Khan',b:'Mumbai',t:'09:28 AM',m:'Geo',c:62.4,loc:'Outside fence ⚠',s:'Spoof flagged',sc:'red'},
+];
+document.getElementById('att-rows').innerHTML = rows.map(r=>`
+  <tr>
+    <td><div class="user-cell"><div class="avatar sm">${initials(r.n)}</div><div><div class="name">${r.n}</div><div class="sub">${r.b}</div></div></div></td>
+    <td>${r.b}</td><td><b>${r.t}</b></td>
+    <td>${r.m==='WiFi'?'<i class="fa-solid fa-wifi" style="color:var(--purple)"></i> WiFi':r.m==='Geo'?'<i class="fa-solid fa-location-dot" style="color:var(--brand)"></i> Geo':r.m==='Voice'?'<i class="fa-solid fa-microphone" style="color:var(--cyan)"></i> Voice':r.m==='Selfie'?'<i class="fa-solid fa-face-smile" style="color:var(--cyan)"></i> Selfie':r.m==='-'?'—':'<i class="fa-solid fa-hand" style="color:var(--cyan)"></i> '+r.m}</td>
+    <td>${r.c?`<div style="display:flex;align-items:center;gap:8px"><div class="bar ${r.c>90?'green':r.c>70?'amber':'red'}" style="width:60px"><span style="width:${r.c}%"></span></div><b style="font-size:12px;color:${r.c>90?'var(--green)':r.c>70?'var(--amber)':'var(--red)'}">${r.c}%</b></div>`:'—'}</td>
+    <td style="font-size:12px;color:var(--ink-3)">${r.loc}</td>
+    <td><span class="chip ${r.sc}">${r.s}</span></td>
+    <td><button class="btn btn-sm btn-ghost"><i class="fa-solid fa-eye"></i></button></td>
+  </tr>
+`).join('');
+
+function openCheckin(){
+  const m = document.createElement('div'); m.className='modal-bg open'; m.id='ci-modal';
+  m.innerHTML = `
+    <div class="modal" style="max-width:480px">
+      <div class="modal-head"><div><div style="font-weight:700">Live Selfie + Gesture Check-In</div><div class="tiny muted">3-step AI verification</div></div><button onclick="this.closest('.modal-bg').remove()"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="modal-body">
+        <div style="display:flex;gap:6px;margin-bottom:14px">
+          <div class="chip green" style="flex:1;justify-content:center"><i class="fa-solid fa-check"></i> Step 1 · Location</div>
+          <div class="chip blue" style="flex:1;justify-content:center"><i class="fa-solid fa-circle-notch fa-spin"></i> Step 2 · Selfie</div>
+          <div class="chip" style="flex:1;justify-content:center">Step 3 · Gesture</div>
+        </div>
+        <div class="selfie-frame">
+          <div class="scanline"></div>
+          <i class="fa-solid fa-user-circle" style="font-size:72px;opacity:.55"></i>
+          <div style="position:absolute;top:14px;left:14px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);padding:5px 10px;border-radius:8px;font-size:11px;display:flex;align-items:center;gap:6px"><span class="dot-s" style="background:#10B981;animation:pulse 1s infinite"></span> Liveness OK</div>
+          <div style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);padding:5px 10px;border-radius:8px;font-size:11px">📍 19.076, 72.877</div>
+          <div style="position:absolute;bottom:14px;left:14px;right:14px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);padding:8px 12px;border-radius:10px;font-size:12px;display:flex;justify-content:space-between"><span>AI Confidence</span><b id="cconf">94.2%</b></div>
+        </div>
+        <div class="ai-card" style="margin-top:12px;padding:12px"><div class="ai-badge"><i class="fa-solid fa-hand"></i> Gesture Challenge</div><div style="font-size:13.5px;font-weight:700;margin-top:6px">Please <u>blink twice</u> and <u>turn head right</u></div></div>
+        <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+          <div class="chip green"><i class="fa-solid fa-check"></i> Face match</div>
+          <div class="chip green"><i class="fa-solid fa-check"></i> Anti-spoof</div>
+          <div class="chip green"><i class="fa-solid fa-check"></i> Device bound</div>
+          <div class="chip amber"><i class="fa-solid fa-circle-notch fa-spin"></i> Gesture</div>
+        </div>
+      </div>
+      <div class="modal-foot"><button class="btn btn-ghost" onclick="this.closest('.modal-bg').remove()">Cancel</button><button class="btn btn-grad" onclick="this.closest('.modal-bg').remove();toast('✅ Checked in at 09:24 AM · Confidence 99.2%','success')"><i class="fa-solid fa-check"></i> Confirm Check-In</button></div>
+    </div>`;
+  document.body.appendChild(m);
+  let c=94.2; const tk=setInterval(()=>{ c=Math.min(99.6,c+Math.random()*0.5); const el=document.getElementById('cconf'); if(!el){clearInterval(tk);return;} el.textContent=c.toFixed(1)+'%'; },180);
+}
+function openCorr(){ toast('Correction request form opened','info'); }
+</script>
+</body></html>

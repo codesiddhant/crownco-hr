@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Visits — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('my-visits');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">Field Workspace / Today's Visits</div>
+<div class="page-head">
+  <div><h1 class="page-title">🛤 Today's Field Visits</h1><div class="page-sub">Live route · client check-ins · proofs</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-ghost"><i class="fa-solid fa-route"></i> Replay Route</button><button class="btn btn-grad"><i class="fa-solid fa-face-smile"></i> Selfie Check-in</button></div>
+</div>
+
+<div class="grid-12">
+  <div class="card col-7 fadeup" style="padding:0;overflow:hidden">
+    <div class="map" style="height:450px;border-radius:0;border:none">
+      <div class="map-grid"></div>
+      <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"><path d="M 80 360 Q 220 280, 330 260 T 580 180" stroke="#06B6D4" stroke-width="3.5" stroke-dasharray="6,4" fill="none"/></svg>
+      <div class="pin green" style="left:11%;top:74%"></div>
+      <div class="pin green" style="left:36%;top:54%"></div>
+      <div class="pin green" style="left:52%;top:44%"></div>
+      <div class="pin amber" style="left:64%;top:32%"></div>
+      <div class="pin" style="left:78%;top:24%"><span style="position:absolute;top:38px;left:-30px;transform:rotate(45deg);background:var(--brand);color:#fff;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap">Now</span></div>
+      <div class="pin red" style="left:86%;top:65%"></div>
+      <div style="position:absolute;left:16px;top:16px;background:rgba(255,255,255,.95);padding:12px 14px;border-radius:12px;box-shadow:var(--shadow);min-width:190px"><div style="font-weight:700;font-size:13px;color:#0F172A"><i class="fa-solid fa-user-clock" style="color:var(--cyan)"></i> ${state.user.name}</div><div style="font-size:11px;color:#475569;margin-top:4px">📍 Andheri East · 22 min</div><div style="font-size:11px;color:#475569">🛣 34.2 km today</div><div style="font-size:11px;color:#475569">✅ 4/6 visits done</div></div>
+    </div>
+  </div>
+
+  <div class="col-5 vstack">
+    <div class="card fadeup">
+      <div class="card-head"><div class="card-title">📋 Visit Timeline</div><span class="chip cyan">4/6</span></div>
+      <div class="tl">
+        ${[
+          {t:'09:14',c:'green',n:'Started · Bandra (Home)',s:'Selfie ✓ GPS lock'},
+          {t:'10:32',c:'green',n:'Client A · Lower Parel',s:'22 min · QR ✓ Sign ✓'},
+          {t:'11:48',c:'green',n:'Client B · BKC Tower',s:'18 min · Photo proof'},
+          {t:'13:20',c:'green',n:'Lunch · Phoenix Mall',s:'45 min · Auto break'},
+          {t:'14:15',c:'amber',n:'Client C · Andheri East',s:'In progress · 22 min'},
+          {t:'16:00',c:'',n:'Client D · Powai',s:'Scheduled · ETA 12 min'},
+          {t:'18:00',c:'',n:'Wrap-up',s:'Auto WhatsApp report'},
+        ].map(x=>`<div class="tl-item ${x.c}"><div style="font-size:11.5px;color:var(--ink-3);font-weight:600">${x.t}</div><div style="font-weight:600;font-size:13px;margin-top:2px">${x.n}</div><div style="font-size:11.5px;color:var(--ink-3)">${x.s}</div></div>`).join('')}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 fadeup">
+    <div class="card">
+      <div class="card-head"><div><div class="card-title">📒 Visit Verification Methods</div></div></div>
+      <div class="grid-4" style="gap:10px">
+        ${[
+          {i:'fa-face-smile',n:'Selfie',d:'Mandatory at every site',c:'brand'},
+          {i:'fa-qrcode',n:'QR Code Scan',d:'Client poster',c:'purple'},
+          {i:'fa-pen-nib',n:'e-Signature',d:'Customer signs on screen',c:'cyan'},
+          {i:'fa-location-crosshairs',n:'GPS Lock',d:'±5m accuracy',c:'green'},
+        ].map(v=>`<div style="padding:14px;background:var(--bg-3);border-radius:12px;text-align:center"><i class="fa-solid ${v.i}" style="font-size:24px;color:var(--${v.c})"></i><div style="font-weight:700;margin-top:8px;font-size:13.5px">${v.n}</div><div style="font-size:11px;color:var(--ink-3);margin-top:4px">${v.d}</div></div>`).join('')}
+      </div>
+    </div>
+  </div>
+</div>
+`;
+</script>
+</body></html>

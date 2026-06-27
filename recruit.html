@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Recruitment — Crownco HR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<script src="js/app.js"></script>
+<script>
+bootPage('recruit');
+document.getElementById('content').innerHTML = `
+<div class="breadcrumb">People / Recruitment</div>
+<div class="page-head">
+  <div><h1 class="page-title">AI Recruitment & Hiring</h1><div class="page-sub">Resume parsing · AI ranking · voice interview analysis</div></div>
+  <div style="display:flex;gap:8px"><button class="btn btn-ghost"><i class="fa-solid fa-briefcase"></i> 12 Open Roles</button><button class="btn btn-grad"><i class="fa-solid fa-plus"></i> Post Job</button></div>
+</div>
+
+<div class="kpi-grid" style="margin-bottom:18px">
+  ${[{l:'Active Candidates',v:'342',c:'b',i:'fa-users',t:'+58 wk'},{l:'AI Ranked',v:'284',c:'p',i:'fa-brain',t:'83%'},{l:'Interviews Scheduled',v:'47',c:'c',i:'fa-calendar',t:'This week'},{l:'Offers Out',v:'12',c:'g',i:'fa-envelope-circle-check',t:'8 accepted'}].map((k,i)=>`<div class="kpi fadeup delay-${i+1}"><div class="kpi-icon ${k.c}"><i class="fa-solid ${k.i}"></i></div><div class="kpi-label">${k.l}</div><div class="kpi-value">${k.v}</div><div class="kpi-trend up">${k.t}</div></div>`).join('')}
+</div>
+
+<div class="kanban">
+  ${[
+    {n:'Applied',c:'#94A3B8',items:[
+      {nm:'Arjun Mehta',r:'Senior SDR',s:88,exp:'4 yr',sk:['Sales','SaaS','HubSpot']},
+      {nm:'Tanvi Sinha',r:'Marketing Lead',s:82,exp:'6 yr',sk:['SEO','Brand']},
+      {nm:'Sahil Khan',r:'Field Officer',s:74,exp:'3 yr',sk:['Field','GPS']},
+      {nm:'Diya Reddy',r:'Support Agent',s:79,exp:'2 yr',sk:['Zendesk','CSAT']},
+    ]},
+    {n:'Screening',c:'#06B6D4',items:[
+      {nm:'Manish Joshi',r:'Senior SDR',s:91,exp:'5 yr',sk:['Sales','Enterprise'],ai:'🌟 Strong match'},
+      {nm:'Aditi Bose',r:'HR Manager',s:86,exp:'7 yr',sk:['Ops','Payroll']},
+    ]},
+    {n:'Interview',c:'#8B5CF6',items:[
+      {nm:'Yash Gupta',r:'Account Mgr',s:93,exp:'6 yr',sk:['Closing','Enterprise'],ai:'🎙 Voice 92%'},
+      {nm:'Ishaan Verma',r:'Team Lead',s:88,exp:'8 yr',sk:['Leadership']},
+    ]},
+    {n:'Offer',c:'#10B981',items:[
+      {nm:'Aisha Patel',r:'Engineer',s:96,exp:'4 yr',sk:['React','Python'],ai:'💎 Top 1%'},
+    ]},
+  ].map(col=>`
+    <div class="kcol">
+      <div class="kcol-head"><span><span class="dot-s" style="background:${col.c}"></span> ${col.n} <span class="muted">(${col.items.length})</span></span><button style="color:var(--ink-3)"><i class="fa-solid fa-plus"></i></button></div>
+      ${col.items.map(c=>`
+        <div class="kcard fadeup">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h5>${c.nm}</h5><div style="font-size:11.5px;color:var(--ink-3);margin-top:2px">${c.r} · ${c.exp}</div></div>
+            <div style="text-align:center;width:38px"><div style="font-weight:800;color:${c.s>90?'var(--green)':c.s>80?'var(--brand)':'var(--amber)'}">${c.s}</div><div style="font-size:9px;color:var(--ink-3);text-transform:uppercase">AI</div></div></div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:8px">${c.sk.map(s=>`<span class="chip" style="font-size:10px;padding:2px 6px">${s}</span>`).join('')}</div>
+          ${c.ai?`<div class="ai-card" style="padding:7px 9px;margin-top:8px;font-size:11px;font-weight:600">${c.ai}</div>`:''}
+        </div>
+      `).join('')}
+    </div>
+  `).join('')}
+</div>
+
+<div class="ai-card fadeup" style="margin-top:18px">
+  <div class="ai-badge"><i class="fa-solid fa-sparkles"></i> AI Hiring Insights</div>
+  <div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <div><div style="font-size:12px;color:var(--ink-3);font-weight:600">🎯 Best fit role</div><div style="font-weight:700;font-size:14px;margin-top:4px">Manish Joshi → Senior SDR<br><span style="color:var(--green);font-size:12px">91% skill match</span></div></div>
+    <div><div style="font-size:12px;color:var(--ink-3);font-weight:600">⚡ Time to hire</div><div style="font-weight:700;font-size:14px;margin-top:4px">14.2 days avg<br><span style="color:var(--green);font-size:12px">-3.4 days vs industry</span></div></div>
+    <div><div style="font-size:12px;color:var(--ink-3);font-weight:600">🎙 Voice interview</div><div style="font-weight:700;font-size:14px;margin-top:4px">Whisper auto-score<br><span style="color:var(--brand);font-size:12px">12 pending review</span></div></div>
+  </div>
+</div>
+`;
+</script>
+</body></html>
